@@ -1,0 +1,974 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f8f7f3">
+  <meta name="description" content="RushRead is a unique way to improve reading speed, comprehension, and memory.">
+  
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
+  <style>:root{
+  --bg:#f8f7f3; --surface:#fff; --ink:#14212e; --muted:#5d6b78; --line:#e4e2dc; --soft:#f0eee8;
+  --blue:#1f4e79; --blue-soft:#dcebf2; --accent:#d9622b; --accent-ink:#b04a1a; --accent-soft:#fbe9dd; --gold:#f2b84b;
+  --ok:#2f6b4f; --ok-bg:#eaf3ee; --bad:#a3432f; --bad-bg:#f9ece8;
+  --r:6px; --shadow:0 1px 2px rgba(20,33,46,.06);
+  --font:Poppins,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:14.5px;line-height:1.6;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{font-weight:600;line-height:1.25;margin:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.skip-link{position:absolute;left:12px;top:-60px;padding:8px 12px;background:#fff;z-index:100;border-radius:var(--r)}
+.skip-link:focus{top:8px}
+.visually-hidden{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;padding:0}
+
+/* Header: a three-band strata rule is the signature */
+.topbar{position:sticky;top:0;z-index:20;background:rgba(248,247,243,.96);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0)}
+.topbar::before{content:"";display:block;height:8px;background:linear-gradient(#f2b84b 0 2px,#d9622b 2px 4px,#c4694f 4px 6px,#8a3b2b 6px 8px)}
+.topbar-inner,.footer-inner,main{max-width:1080px;margin:0 auto;padding-left:24px;padding-right:24px}
+.topbar-inner{display:flex;align-items:center;gap:28px;height:56px}
+.brand{display:flex;align-items:center;gap:9px;font-weight:600;font-size:16px;letter-spacing:-.01em}
+.brand img{border-radius:6px}
+#main-nav{display:flex;gap:2px;flex:1}
+.nav-link{padding:6px 11px;border-radius:var(--r);color:var(--muted);font-weight:500;font-size:13.5px}
+.nav-link:hover{color:var(--ink);background:var(--soft)}
+.nav-link.active{color:var(--ink);box-shadow:inset 0 -2px 0 var(--accent);border-radius:0}
+.topbar-right{display:flex;gap:10px;align-items:center}
+.avatar-btn{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--surface);font-weight:600;font-size:12px}
+.avatar-btn:hover{background:var(--soft)}
+main{padding-top:40px;padding-bottom:24px;min-height:calc(100vh - 140px)}
+.app-footer{border-top:1px solid var(--line);margin-top:48px;font-size:12.5px;color:var(--muted)}
+.footer-inner{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:20px;padding-bottom:calc(24px + env(safe-area-inset-bottom,0))}
+.footer-links{display:flex;gap:4px}
+.footer-links .nav-link{padding:0 8px;font-size:12.5px;box-shadow:none}
+
+/* Type */
+.page-title{font-size:28px;letter-spacing:-.02em;margin-bottom:6px}
+.page-subtitle{color:var(--muted);margin:0 0 28px;max-width:60ch}
+.block{margin-bottom:44px}
+.block-title{font-size:15px;margin-bottom:14px}
+.section-heading{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:14px}
+.section-heading .block-title,.section-heading h2{margin:0;font-size:15px}
+.section-heading p{margin:0;font-size:13px;color:var(--muted)}
+.text-link{color:var(--accent-ink);font-weight:500;font-size:13.5px}
+.text-link:hover{text-decoration:underline}
+.small-note{font-size:12.5px;color:var(--muted)}
+.center{text-align:center}
+.muted{opacity:.5}
+.divider{height:1px;background:var(--line);margin:18px 0}
+.stack>*+*{margin-top:16px}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 16px;border-radius:var(--r);font-size:13.5px;font-weight:500;border:1px solid transparent;transition:background .12s,border-color .12s}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-primary:hover{background:#173f63}
+.btn-outline,.btn-ghost,.btn-white{background:var(--surface);border-color:var(--line);color:var(--ink)}
+.btn-outline:hover,.btn-ghost:hover,.btn-white:hover{background:var(--soft)}
+.btn-sm{padding:5px 11px;font-size:12.5px}
+.btn:disabled{opacity:.45;cursor:default}
+
+/* Home */
+.intro{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center;margin-bottom:48px}
+.intro h1{font-size:40px;letter-spacing:-.03em;line-height:1.15;max-width:15ch;margin-bottom:16px}
+.intro p{color:var(--muted);max-width:44ch;margin:0 0 24px;font-size:15px}
+.intro-actions{display:flex;gap:10px;flex-wrap:wrap}
+.intro-art{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);overflow:hidden;aspect-ratio:480/220}
+.strata{display:block;width:100%;height:100%}
+.drill-grid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:var(--r);background:var(--surface);box-shadow:var(--shadow)}
+.drill{padding:20px 22px;display:flex;flex-direction:column;gap:6px}
+.drill+.drill{border-left:1px solid var(--line)}
+.drill h3{font-size:15px}
+.drill p{margin:0 0 8px;color:var(--muted);font-size:13.5px;flex:1}
+
+/* Metrics: one ruled strip */
+.metric-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+.metric-card{padding:16px 20px}
+.metric-card+.metric-card{border-left:1px solid var(--line)}
+.metric-caption{font-size:12.5px;color:var(--muted);font-weight:500}
+.metric-value{font-size:24px;font-weight:600;letter-spacing:-.02em;margin:2px 0}
+.metric-foot{font-size:12px;color:var(--muted)}
+
+/* Story list */
+.story-grid{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);box-shadow:var(--shadow)}
+.story-row{display:grid;grid-template-columns:112px minmax(0,2.2fr) minmax(0,1.3fr) minmax(0,1.1fr) auto;gap:20px;align-items:center;padding:16px 20px}
+.story-row+.story-row{border-top:1px solid var(--line)}
+.sr-main h3{font-size:14.5px;margin-bottom:2px}
+.sr-main p{margin:0;font-size:13px;color:var(--muted)}
+.sr-meta{display:flex;flex-direction:column;font-size:12.5px;color:var(--muted)}
+.sr-done{color:var(--ok);font-weight:500}
+.story-actions{display:flex;gap:6px}
+.empty-state{text-align:center;padding:40px 16px;color:var(--muted)}
+
+/* Library controls */
+.control-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:16px}
+.searchbox{flex:1;min-width:200px;padding:9px 12px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+.filter-pills{display:flex;gap:4px;flex-wrap:wrap}
+.pill{padding:6px 12px;border-radius:var(--r);border:1px solid var(--line);background:var(--surface);font-size:13px;color:var(--muted);font-weight:500}
+.pill.active{background:var(--blue);border-color:var(--blue);color:#fff}
+.tag{display:inline-block;font-size:12px;font-weight:500;padding:2px 8px;border-radius:4px;background:var(--soft);color:var(--muted)}
+
+/* Panels / forms */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:var(--shadow)}
+.panel h3{font-size:14.5px;margin-bottom:4px}
+.panel p{color:var(--muted);margin:0 0 12px;font-size:13.5px}
+.two-col,.mission-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.field,.form-field input,.form-field textarea,.form-field select,select{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+.form-field{margin-bottom:14px}
+.form-field label{display:block;font-size:13px;font-weight:500;margin-bottom:4px}
+.form-field small{color:var(--muted);font-size:12px}
+textarea{min-height:120px;resize:vertical}
+.tip-box,.caution{background:var(--soft);border-radius:var(--r);padding:11px 14px;font-size:13px;color:var(--muted)}
+.caution{background:var(--accent-soft);color:var(--accent-ink)}
+.source-list{display:grid;gap:6px;font-size:13px}
+.source-list a{color:var(--accent-ink)}
+.source-list a:hover{text-decoration:underline}
+.mission-stat{font-size:32px;font-weight:600;letter-spacing:-.02em}
+.panel ul{padding-left:18px;color:var(--muted);font-size:13.5px}
+.panel li{margin-bottom:6px}
+
+/* Reader */
+.reader-crumb{font-size:13px;margin-bottom:14px;color:var(--muted)}
+.reader-crumb a{color:var(--accent-ink);font-weight:500}
+.reader-header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:20px}
+.reader-header h1{font-size:26px;letter-spacing:-.02em}
+.reader-header p{margin:2px 0 0;color:var(--muted)}
+.reader-layout{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:20px;align-items:start}
+.reader-sheet{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:26px 32px;box-shadow:var(--shadow)}
+.reader-toolbar{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;margin-bottom:22px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.toolbar-group{display:flex;gap:2px;background:var(--soft);padding:3px;border-radius:var(--r)}
+.toolbar-group button{padding:5px 12px;border:0;background:transparent;border-radius:4px;font-size:13px;font-weight:500;color:var(--muted)}
+.toolbar-group button.active,.toolbar-group button:hover{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.reader-text{font-size:17.5px;line-height:1.85;max-width:62ch}
+.reader-text.large{font-size:20px}.reader-text.xlarge{font-size:22px}
+.reader-text.spacious{line-height:2.2}
+.reader-text.highcontrast{background:#111;color:#f5f5f0;padding:20px;border-radius:var(--r)}
+.reader-controls{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px}
+.speed-stage{min-height:150px;display:flex;align-items:center;justify-content:center;background:var(--soft);border-radius:var(--r);margin-bottom:14px}
+.speed-word{font-size:36px;font-weight:600;letter-spacing:-.01em}
+.speed-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:8px}
+.speed-controls input[type=range]{accent-color:var(--accent)}
+.sentence-focus{background:var(--accent-soft)}
+.sentence-muted{opacity:.3}
+.vocab-word{background:none;border:0;padding:0;border-bottom:1.5px dotted var(--accent);font:inherit;color:inherit;cursor:pointer}
+.glossary-box{font-size:13.5px;color:var(--muted);min-height:44px;margin-top:18px}
+.reader-tip{font-size:13px;line-height:1.8}
+.mode-list{margin:8px 0 0;font-size:13px}
+.mode-list dt{font-weight:600;margin-top:8px}
+.mode-list dd{margin:0;color:var(--muted)}
+
+/* Quiz / recall / results */
+.quiz-top{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:8px}
+.progress-track{height:4px;background:var(--line);border-radius:2px;overflow:hidden;margin-bottom:18px}
+.progress-fill{height:100%;background:var(--accent)}
+.quiz-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px;box-shadow:var(--shadow);max-width:680px}
+.quiz-card h2{font-size:18px;margin:8px 0 14px;font-weight:500}
+.options{display:flex;flex-direction:column;gap:8px;margin:14px 0}
+.answer-option{display:flex;align-items:center;gap:12px;padding:11px 14px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);text-align:left;font-size:14px}
+.answer-option:hover:not(:disabled){border-color:var(--ink)}
+.answer-option.correct{border-color:var(--ok);background:var(--ok-bg)}
+.answer-option.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.choice-letter{width:24px;height:24px;border-radius:4px;background:var(--soft);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:12px;flex-shrink:0}
+.quiz-feedback{margin-top:14px;padding:14px;border-radius:var(--r);background:var(--ok-bg);font-size:13.5px}
+.quiz-feedback.bad{background:var(--bad-bg)}
+.quiz-feedback strong{margin-right:4px}
+.quiz-feedback .btn{margin-top:10px}
+.quiz-shell{max-width:680px}
+.result-circle{width:84px;height:84px;border-radius:50%;border:3px solid var(--blue);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:600;margin:0 auto 12px}
+.results-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:18px}
+.log-list{list-style:none;padding:0;margin:0}
+.log-row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.log-row small{color:var(--muted)}
+.score{font-weight:500;white-space:nowrap}
+
+/* Phonics */
+.phonics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.phonics-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.phonics-card h3{font-size:15px;margin-bottom:2px}
+.phonics-card p{margin:0 0 12px;font-size:13px;color:var(--muted)}
+.sound-chunks{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.chunk{min-width:52px;min-height:52px;display:flex;align-items:center;justify-content:center;background:var(--blue-soft);color:var(--blue);border-radius:var(--r);font-size:22px;font-weight:600}
+.word-result{font-size:28px;font-weight:600;margin:6px 0 12px}
+.phonics-words{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.sound-word{padding:3px 10px;background:var(--soft);border-radius:4px;font-size:13.5px}
+.sound-question{margin-top:22px;border-top:1px solid var(--line);padding-top:18px}
+.phonics-practice{max-width:680px}
+
+/* Progress */
+.badge-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.achievement{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;font-size:13px}
+.achievement p{margin:2px 0 0;color:var(--muted)}
+.activity-chart{display:flex;gap:6px;align-items:flex-end;height:150px;margin:14px 0}
+.bar-group{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;justify-content:flex-end;height:100%;font-size:12px;color:var(--muted)}
+.bar{width:100%;background:var(--accent);border-radius:3px 3px 0 0;min-height:4px;opacity:.85}
+
+/* Modal / toast */
+#modal-root:not(:empty){position:fixed;inset:0;background:rgba(28,29,31,.4);display:flex;align-items:center;justify-content:center;z-index:50;padding:20px}
+.modal-wrap{display:contents}
+.modal{background:var(--surface);border-radius:8px;padding:24px;max-width:420px;width:100%;max-height:90vh;overflow:auto;box-shadow:0 8px 24px rgba(28,29,31,.14)}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.modal h2{font-size:17px}
+.close-btn{background:none;border:0;font-size:22px;color:var(--muted);line-height:1}
+.settings-group{margin:14px 0}
+.settings-group label{display:flex;align-items:center;gap:8px}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:var(--r);font-size:13.5px;z-index:60}
+
+@media (max-width:900px){
+  .reader-layout,.two-col,.mission-grid{grid-template-columns:1fr}
+  .intro h1{font-size:32px}
+  .drill-grid,.phonics-grid{grid-template-columns:1fr}
+  .drill+.drill{border-left:0;border-top:1px solid var(--line)}
+  .metric-grid{grid-template-columns:1fr 1fr}
+  .metric-card:nth-child(3){border-left:0}
+  .metric-card:nth-child(n+3){border-top:1px solid var(--line)}
+  .story-row{grid-template-columns:84px 1fr auto;gap:6px 14px}
+  .sr-art{grid-row:1/4}
+  .sr-main,.sr-meta{grid-column:2}
+  .story-actions{grid-row:1;grid-column:3}
+}
+@media (max-width:720px){
+  .topbar-inner{flex-wrap:wrap;height:auto;padding-top:10px;padding-bottom:6px;gap:8px 16px}
+  #main-nav{order:3;flex-basis:100%;overflow-x:auto}
+  .nav-link{white-space:nowrap}
+  .topbar-inner,.footer-inner,main{padding-left:16px;padding-right:16px}
+  .topbar-right{margin-left:auto}
+  main{padding-top:24px}
+  .reader-sheet{padding:18px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+.hero{text-align:center;padding:8px 0 48px}
+.book{display:block;margin:0 auto 24px;width:min(540px,94%);background:none;border:0;padding:0;transition:transform .15s}
+.book:hover{transform:translateY(-3px)}
+.book svg{display:block;width:100%;height:auto}
+.hero h1{font-size:44px;letter-spacing:-.03em;line-height:1.15;margin-bottom:22px}
+.hero-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.sr-art,.reader-art{overflow:hidden;border:1px solid var(--line);border-radius:4px;background:var(--accent-soft)}
+.sr-art{width:112px;height:72px}
+.reader-art{height:190px;margin-bottom:20px;border-radius:var(--r)}
+.art{display:block;width:100%;height:100%}
+.tabs{display:flex;gap:4px;margin-bottom:22px}
+.tabs .pill{display:inline-block}
+.order-picked{padding-left:22px;margin:0 0 16px}
+.order-picked li{margin-bottom:6px}
+.order-picked li.ok{color:var(--ok)}
+.order-picked li.bad{color:var(--bad)}
+.speed-controls .toolbar-group button{padding:5px 10px}
+@media (max-width:720px){.hero h1{font-size:32px}}
+
+.hero{position:relative;overflow:hidden;background:var(--blue);color:#fff;border-radius:10px;padding:44px 24px 30px;margin-bottom:48px;isolation:isolate}
+.hero-bg{position:absolute;inset:0;width:100%;height:100%;z-index:-1}
+.hero h1{color:#f7efdc;font-size:42px;margin-bottom:20px}
+.hero-actions{margin-bottom:26px}
+.hero .btn-primary{background:var(--gold);color:var(--ink)}
+.hero .btn-primary:hover{background:#f7c766}
+.hero .btn-outline{background:transparent;border-color:rgba(255,255,255,.55);color:#fff}
+.hero .btn-outline:hover{background:rgba(255,255,255,.12)}
+.book{margin-bottom:0}
+.drill{border-top:3px solid var(--c,var(--accent))}
+.drill:nth-child(1){--c:#d9622b}.drill:nth-child(2){--c:#1f4e79}.drill:nth-child(3){--c:#f2b84b}
+.metric-card:nth-child(1) .metric-value{color:#b04a1a}.metric-card:nth-child(2) .metric-value{color:#1f4e79}.metric-card:nth-child(3) .metric-value{color:#8a6a10}.metric-card:nth-child(4) .metric-value{color:#3f5c3a}
+.sr-art,.reader-art{background:var(--blue-soft)}
+.nav-link.active{color:var(--blue)}
+.text-link{color:var(--blue)}
+.progress-fill,.bar{background:var(--accent)}
+.sentence-focus{background:#fbe9bd}
+@media (max-width:720px){.hero{padding:32px 16px 22px}.hero h1{font-size:30px}}
+
+@media (max-width:900px){.sr-art{width:84px;height:56px}}
+
+/* Kid-friendly editorial redesign */
+:root{--bg:#fffaf1;--surface:#fffefa;--ink:#24364b;--muted:#596776;--line:#e9e3d8;--soft:#f6f1e7;--blue:#276a8a;--accent:#e87843;--accent-ink:#ae4f25;--accent-soft:#fff0df;--r:18px;--shadow:0 5px 20px rgba(66,49,27,.06);--font:"Nunito",system-ui,sans-serif}
+body{font-size:16px;background:var(--bg)}h1,h2,h3,.brand,.page-title{font-family:"Nunito",system-ui,sans-serif;font-weight:800;letter-spacing:-.025em}
+.topbar{background:#fffdf8}.topbar::before{height:5px;background:linear-gradient(90deg,#e98b59 0 25%,#f4c86e 25% 50%,#80aa90 50% 75%,#84b6c9 75%)}
+.topbar-inner,main,.footer-inner{max-width:1180px}.topbar-inner{height:68px}.brand{font-size:21px;color:#276a8a}.nav-link{font-size:14px;border-radius:12px}.nav-link.active{background:#e7f2f2;box-shadow:none;border-radius:12px;color:#225f72}
+.btn{border-radius:14px;font-weight:800;font-size:14px;min-height:43px;padding:10px 17px}.btn-primary{background:#287b80}.btn-primary:hover{background:#1e6266}.btn-outline:hover{background:#f4eee4}
+.kid-hero{display:grid;grid-template-columns:1fr 1.05fr;align-items:center;gap:14px;background:#f6e5cd;border-radius:24px;overflow:hidden;min-height:290px;margin-bottom:30px;border:1px solid #ecd8bc}
+.kid-hero-copy{padding:34px 10px 34px 38px;position:relative;z-index:1}.kid-kicker{font-size:11px;font-weight:900;letter-spacing:.14em;color:#995c3b}.kid-hero h1{font-size:clamp(36px,4.6vw,60px);line-height:1.05;color:#26465a;margin:12px 0}.kid-hero p{font-size:16px;margin:0 0 22px;color:#4b6268}.kid-hero img{width:100%;height:100%;max-height:350px;object-fit:cover;object-position:28% center}
+.home-head{margin-bottom:17px}.home-head h2{font-size:24px;margin:0 0 4px}.home-head p{color:var(--muted);margin:0}
+.feature-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:28px}.feature{padding:24px;display:flex;flex-direction:column;align-items:flex-start;border-radius:20px;border:1px solid #e8e0d3;box-shadow:var(--shadow)}.feature-speed{background:#fce8d9}.feature-read{background:#e6f1df}.feature-memory{background:#e7e8f8}.feature h2{font-size:21px;margin:8px 0}.feature p{font-size:14px;flex:1;line-height:1.55}.activity-illustration{font-size:40px;line-height:1.3}.feature .btn{margin-top:12px}
+.metric-grid{border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}.metric-card{padding:20px}.metric-value{color:#2a7281}.story-grid,.panel,.reader-sheet,.story-card,.quiz-card{border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}.story-card{background:#fffefa}.story-body{padding:18px}.story-body h3{font-size:18px}.tag,.pill{border-radius:100px}.pill{padding:9px 16px}.pill.active{background:#287b80;border-color:#287b80}.reader-text{font-family:Georgia,serif;font-size:19px;line-height:1.95}.reader-sheet{padding:30px}.answer-option{border-radius:14px;min-height:52px}.searchbox,input,select,textarea{font-size:16px}
+@media(max-width:760px){main{padding:22px 16px}.kid-hero{grid-template-columns:1fr}.kid-hero-copy{padding:26px 24px 8px}.kid-hero img{height:190px;object-position:center 35%}.feature-grid{grid-template-columns:1fr}.feature{padding:20px}.metric-grid{grid-template-columns:repeat(2,1fr)}.metric-card{border-bottom:1px solid var(--line)}.topbar-inner{gap:8px;padding:0 12px}.nav-link{padding:7px}.kid-hero h1{font-size:38px}}
+
+/* Reader workspace: activity centered, no oversized banner */
+.reader-layout{grid-template-columns:minmax(155px, .65fr) minmax(0, 2.8fr) minmax(170px,.8fr);gap:16px;align-items:start}
+.reader-header{max-width:760px;margin:0 auto 22px;text-align:center;align-items:center;flex-wrap:wrap;justify-content:center}
+.reader-header h1{font-size:30px}.reader-crumb{margin-bottom:20px}
+.reader-sheet{min-width:0;padding:25px 25px 30px;border:2px solid #d9e8e3;background:#fff}
+.reader-toolbar{justify-content:center}.reader-text{max-width:none}
+.reader-side{display:grid;gap:14px}.reader-side .panel{padding:18px;background:#edf5fa;border-color:#d7e7f0}.reader-side .panel:nth-child(2){background:#f0f4e6;border-color:#dfe8cc}
+.reader-play-side{display:grid;gap:15px}.play-card{border-radius:20px;padding:20px 16px;text-align:center;border:1px solid rgba(40,55,65,.08)}
+.play-peach{background:#ffe9dc}.play-yellow{background:#fff1bf}.play-icon{display:block;font-size:38px;margin-bottom:9px}.play-card h3{font-size:17px;margin-bottom:8px}.play-card p{font-size:13px;color:#526273;line-height:1.5;margin:0}
+.speed-stage{background:#eaf4ed;min-height:220px;border-radius:18px}.speed-word{font-size:clamp(30px,4vw,48px)}
+@media(max-width:1050px){.reader-layout{grid-template-columns:minmax(0,1fr) 235px}.reader-play-side{grid-column:1/-1;grid-row:2;grid-template-columns:repeat(2,1fr)}.reader-sheet{grid-column:1;grid-row:1}.reader-side{grid-column:2;grid-row:1}}
+@media(max-width:720px){.reader-layout{grid-template-columns:1fr}.reader-sheet,.reader-side,.reader-play-side{grid-column:1;grid-row:auto}.reader-play-side{grid-template-columns:repeat(2,minmax(0,1fr))}.reader-header{text-align:left;justify-content:flex-start}.reader-sheet{padding:18px}.play-card{padding:14px 10px}}
+
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+
+/* Quiet, functional reading workspace with story-specific, non-AI illustrations */
+.reader-layout{grid-template-columns:minmax(120px,190px) minmax(0,1fr) minmax(130px,175px);gap:20px;align-items:start}
+.reader-header{max-width:none}.reader-sheet{grid-column:2;min-width:0}
+.reader-illustration-side{grid-column:1;align-self:start;padding-top:18px}
+.story-illustration{border:1px solid #e7e4dc;background:#f2f7ef;border-radius:18px;padding:20px 12px 12px;text-align:center}
+.story-illustration img{display:block;width:100%;max-width:140px;aspect-ratio:1;object-fit:contain;margin:auto}
+.illustration-credit{display:block;font-size:10px;color:#687b75;margin-top:12px}
+.reader-side{grid-column:3;display:block}.reader-help{padding:14px 12px;border:1px solid #e6e3da;border-radius:15px;background:#fffefa}
+.reader-help-title{font-size:14px;font-weight:800}.reader-help p{font-size:12px;color:#61707a;margin:5px 0 12px;line-height:1.5}
+.help-chips{display:flex;flex-wrap:wrap;gap:7px}.help-chip{position:relative;display:inline-flex;align-items:center;gap:6px;border:1px solid #dce7e3;background:#f4f9f7;border-radius:9px;padding:6px 8px;font-size:12px;font-weight:700;cursor:help}
+.help-mark{font-size:11px;color:#477a80;border:1px solid #9ebcba;width:16px;height:16px;border-radius:50%;text-align:center;line-height:14px}
+.help-chip:hover:after,.help-chip:focus-visible:after{content:attr(data-help);position:absolute;bottom:calc(100% + 9px);right:-8px;width:180px;padding:10px 12px;background:#253c4a;color:white;font-size:12px;font-weight:500;line-height:1.5;border-radius:9px;z-index:10;box-shadow:0 6px 18px #0002}
+.reader-toolbar button[data-action="read-mode"],.reader-toolbar button[data-action="font"],.reader-toolbar button[data-action="read-aloud"]{position:relative}
+.reader-toolbar button:hover:after,.reader-toolbar button:focus-visible:after{content:attr(title);position:absolute;top:calc(100% + 9px);left:50%;transform:translateX(-50%);width:max-content;max-width:170px;padding:6px 9px;background:#253c4a;color:white;font-size:12px;border-radius:7px;z-index:11;pointer-events:none}
+@media(max-width:980px){.reader-layout{grid-template-columns:minmax(0,1fr) 160px}.reader-sheet{grid-column:1;grid-row:1}.reader-illustration-side{grid-column:2;grid-row:1}.reader-side{grid-column:2;grid-row:2}}
+@media(max-width:650px){.reader-layout{grid-template-columns:1fr}.reader-sheet{grid-column:1;grid-row:2}.reader-illustration-side{grid-column:1;grid-row:1;padding:0}.story-illustration{display:flex;align-items:center;justify-content:center;gap:12px;padding:8px}.story-illustration img{width:76px}.reader-side{grid-column:1;grid-row:3}}
+/* Home: keep the open book, remove the dark landscape backdrop. */
+.hero{background:transparent;border:0;box-shadow:none;color:var(--ink);padding:22px 18px 12px;margin-bottom:30px;overflow:visible}
+.hero h1{color:var(--ink)}
+.hero .btn-outline{color:var(--ink);border-color:var(--line);background:var(--surface)}
+.hero .btn-outline:hover{background:var(--soft)}
+
+/* Focused, restrained learning interface */
+:root{--bg:#f8f8f6;--surface:#fff;--ink:#202b38;--muted:#64707c;--line:#e3e6e8;--soft:#f2f4f5;--blue:#255c85;--accent:#dc7548;--accent-ink:#a74f2e;--accent-soft:#fff2e9;--r:12px;--shadow:0 2px 12px rgba(28,44,58,.045);--font:"Poppins",sans-serif}
+body,button,input,select,textarea{font-family:"Poppins",sans-serif}body{font-size:14px}h1,h2,h3,.brand,.page-title{font-family:"Poppins",sans-serif;font-weight:600;letter-spacing:-.025em}
+.topbar{background:#fff}.topbar::before{height:3px;background:#d9794f}.nav-link.active{background:#eef3f6;color:#255c85}.btn,.pill{border-radius:9px}.btn-primary,.pill.active{background:#255c85;border-color:#255c85}.btn-primary:hover{background:#1a4667}
+.page-title{font-size:30px}.page-subtitle{max-width:650px}.panel,.quiz-card,.phonics-card,.reader-sheet{border-radius:12px;box-shadow:var(--shadow)}.chunk{border-radius:9px;background:#e8eff4;color:#255c85}.progress-fill,.bar{background:#dc7548}
+/* Center the actual interactive activities instead of surrounding them with filler panels. */
+#content:has(.memory-workspace),#content:has(.sound-workspace){max-width:1040px}
+.memory-workspace,.sound-workspace{width:min(100%,730px);margin:18px auto 48px}
+.memory-workspace>.page-title,.sound-workspace>.page-title,.memory-workspace>.page-subtitle,.sound-workspace>.page-subtitle{text-align:center;margin-left:auto;margin-right:auto}
+.memory-workspace .tabs{justify-content:center;margin:22px 0 26px}.memory-workspace .quiz-card,.sound-workspace .panel{max-width:none;width:100%;padding:30px}
+.memory-workspace .quiz-top{margin-top:24px}.memory-workspace .progress-track{height:7px}.sound-workspace .sound-chunks{justify-content:center}.sound-workspace .word-result{text-align:center}.sound-workspace .phonics-words{justify-content:center}.sound-workspace .panel>h3{text-align:center}.sound-workspace .panel>button[data-action="speak-word"]{display:flex;margin:14px auto}.sound-workspace .sound-question{margin-top:26px}
+.sound-lesson-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:22px}.sound-lesson-grid .phonics-card{padding:20px}.sound-lesson-grid .phonics-card p{min-height:36px}.sound-lesson-grid .phonics-card .btn{margin-top:8px}
+.learning-progress-summary{padding:13px 17px;border:1px solid var(--line);background:#f4f6f7;border-radius:10px;font-size:13px;color:var(--muted);margin:18px 0}.learning-progress-summary strong{color:var(--ink)}
+.phonics-practice{max-width:none}.phonics-practice .reader-crumb{text-align:center!important}
+@media(max-width:600px){.memory-workspace .quiz-card,.sound-workspace .panel{padding:20px}.sound-lesson-grid{grid-template-columns:1fr}}
+
+#content:has(.tabs)>.quiz-card,#content:has(.tabs)>.quiz-top,#content:has(.tabs)>.progress-track,#content:has(.tabs)>.page-subtitle,#content:has(.tabs)>.tabs,#content:has(.tabs)>.page-title,#content:has(.tabs)>.empty-state{max-width:730px;margin-left:auto;margin-right:auto}
+#content:has(.tabs)>.tabs{justify-content:center}#content:has(.tabs)>.page-title,#content:has(.tabs)>.page-subtitle{text-align:center}
+#content:has(.tabs)>.quiz-card{padding:30px}#content:has(.tabs)>.progress-track{height:7px}
+#content:has(.phonics-practice)>.phonics-practice{max-width:730px;margin:0 auto}#content:has(.phonics-practice) .page-title,#content:has(.phonics-practice) .page-subtitle{text-align:center}
+#content:has(.phonics-practice) .panel{padding:30px}
+
+/* Home: quiet editorial layout, rather than colorful feature tiles. */
+.home-hero{margin-bottom:48px}
+.home-section{margin:0 0 52px}
+.home-section-heading{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:19px}
+.home-section-heading h2{font-size:23px;font-weight:700;letter-spacing:-.035em;margin:0 0 5px}
+.home-section-heading p{margin:0;color:#68717a;font-size:14px}
+.home-section-heading .text-link{white-space:nowrap;font-size:13px}
+.home-practice{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.home-practice-item{background:#fff;border:1px solid #e7e6e2;border-radius:10px;padding:24px 22px 21px;min-height:180px;display:flex;flex-direction:column;align-items:flex-start;transition:border-color .15s,transform .15s}
+.home-practice-item:hover{border-color:#9db3c0;transform:translateY(-2px)}
+.practice-number{font-size:12px;color:#a36a4e;font-weight:600;margin-bottom:21px;letter-spacing:.08em}
+.home-practice-item h3{font-size:17px;font-weight:700;margin-bottom:7px;letter-spacing:-.02em}
+.home-practice-item p{color:#68717a;font-size:13px;line-height:1.55;margin:0}
+.practice-arrow{align-self:flex-end;margin-top:auto;color:#557185;font-size:20px}
+.home-metrics .metric-grid{border:1px solid #e7e6e2;border-radius:10px;box-shadow:none;background:#fff}
+.home-metrics .metric-card{padding:23px 19px}
+.home-metrics .metric-value{color:#253d50!important;font-size:25px}
+.home-section .story-grid{border-radius:10px;box-shadow:none}
+.home-section .story-row{background:#fff}
+@media(max-width:760px){.home-practice{grid-template-columns:1fr}.home-practice-item{min-height:0;padding:19px}.practice-number{margin-bottom:10px}.home-section-heading{align-items:start}.home-section-heading h2{font-size:20px}.home-section{margin-bottom:38px}}
+
+/* Warm editorial palette, without generic white dashboard cards */
+:root{--bg:#f5efe3;--surface:#fffaf0;--ink:#263b46;--muted:#586b70;--line:#d9d0bf;--soft:#ebe6d8;--blue:#315f70;--accent:#c66d46;--accent-ink:#a64c30;--accent-soft:#f3e1cc;--shadow:0 3px 12px rgba(60,54,40,.07);--font:"Poppins",sans-serif}
+body{background:linear-gradient(135deg,#f5eee0 0%,#f0f1e7 55%,#f7ebdf 100%);font-family:"Poppins",sans-serif}
+.topbar{background:#f8f2e7}.topbar::before{background:#b96a4c;height:4px}.nav-link.active{background:#e2e8dd;color:#315f70}
+.home-hero{background:#e4e9dc!important;border:1px solid #c9d6c8!important;color:#263b46!important}.home-hero h1{color:#263b46!important}.home-hero .btn-outline{color:#315f70!important;border-color:#9eb1a7!important;background:#f9f5eb!important}
+.home-practice-item{background:#f9f2e5!important;border-color:#d7c9b4!important;border-radius:13px!important}
+.home-practice-item:nth-child(2){background:#e8ede1!important;border-color:#c7d4c3!important}.home-practice-item:nth-child(3){background:#eee8dc!important}
+.home-practice-item:hover{border-color:#b46d4c!important;box-shadow:0 8px 22px rgba(60,54,40,.09)}
+.metric-grid,.story-grid,.panel,.quiz-card,.phonics-card{background:#fffbf3;border-color:#ded5c6}
+#content:has(.tabs) .page-title,#content:has(.tabs)>.page-subtitle{text-align:center}
+#content:has(.tabs)>.quiz-card,#content:has(.tabs)>.quiz-top,#content:has(.tabs)>.progress-track,#content:has(.tabs)>.options,#content:has(.tabs)>.panel{max-width:720px;margin-left:auto;margin-right:auto}
+#content:has(.tabs)>.tabs{justify-content:center}
+#content:has(.tabs){background:radial-gradient(ellipse at 50% 0%,#e7e9d8 0,transparent 60%);border-radius:20px;padding-top:24px}
+.sound-workspace{background:linear-gradient(160deg,#e5eade,#f5eddf);border:1px solid #d5d7c7;border-radius:20px;padding:32px;max-width:900px;width:100%}
+.sound-lesson-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.sound-lesson-grid .phonics-card{border-radius:14px;min-height:165px;padding:21px;background:#fff9ed}
+.sound-lesson-grid .phonics-card:nth-child(3n+2){background:#e9f0e5}.sound-lesson-grid .phonics-card:nth-child(3n){background:#f3e6d8}
+.sound-lesson-grid .phonics-card:hover{transform:translateY(-3px);box-shadow:0 7px 20px rgba(43,58,48,.11)}
+.learning-progress-summary{background:#f8f5e9;border-color:#d6d6c5}
+.phonics-practice{max-width:720px;margin:20px auto;background:#e8eee3;border:1px solid #d0d9c9;border-radius:20px;padding:30px}
+@media(max-width:760px){.sound-workspace{padding:20px}.sound-lesson-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.phonics-practice{padding:18px}}
+@media(max-width:470px){.sound-lesson-grid{grid-template-columns:1fr}}
+
+/* Accessible appearance themes */
+:root[data-theme="dark"]{color-scheme:dark;--bg:#171d24;--surface:#242d36;--ink:#f3f0e8;--muted:#b9c5ce;--line:#45525c;--soft:#303b45;--blue:#8bc9d5;--blue-soft:#2b4552;--accent:#edaa77;--accent-ink:#ffc092;--accent-soft:#47372f;--ok:#9dd5b0;--ok-bg:#294538;--bad:#ffb5a3;--bad-bg:#4a3031;--shadow:0 4px 18px rgba(0,0,0,.18)}
+@media(prefers-color-scheme:dark){:root[data-theme="system"]{color-scheme:dark;--bg:#171d24;--surface:#242d36;--ink:#f3f0e8;--muted:#b9c5ce;--line:#45525c;--soft:#303b45;--blue:#8bc9d5;--blue-soft:#2b4552;--accent:#edaa77;--accent-ink:#ffc092;--accent-soft:#47372f;--ok:#9dd5b0;--ok-bg:#294538;--bad:#ffb5a3;--bad-bg:#4a3031;--shadow:0 4px 18px rgba(0,0,0,.18)}}
+:root[data-theme="dark"] body,:root[data-theme="dark"] .topbar,:root[data-theme="dark"] .app-footer{background:var(--bg);color:var(--ink)}
+:root[data-theme="dark"] .panel,:root[data-theme="dark"] .reader-sheet,:root[data-theme="dark"] .quiz-card,:root[data-theme="dark"] .story-card,:root[data-theme="dark"] .modal,:root[data-theme="dark"] .story-grid,:root[data-theme="dark"] .phonics-card,:root[data-theme="dark"] .achievement,:root[data-theme="dark"] .metric-grid,:root[data-theme="dark"] .searchbox,:root[data-theme="dark"] .field,:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,:root[data-theme="dark"] .answer-option,:root[data-theme="dark"] .btn-outline,:root[data-theme="dark"] .btn-ghost,:root[data-theme="dark"] .pill{background:var(--surface);color:var(--ink);border-color:var(--line)}
+:root[data-theme="dark"] .kid-hero,:root[data-theme="dark"] .feature,:root[data-theme="dark"] .feature-speed,:root[data-theme="dark"] .feature-read,:root[data-theme="dark"] .feature-memory{background:#303e45;color:var(--ink);border-color:var(--line)}
+:root[data-theme="dark"] .kid-hero h1,:root[data-theme="dark"] .kid-hero p,:root[data-theme="dark"] .brand,:root[data-theme="dark"] .nav-link.active{color:var(--ink)}
+:root[data-theme="dark"] .nav-link.active,:root[data-theme="dark"] .pill.active,:root[data-theme="dark"] .toolbar-group button.active{background:#36535c;color:#fff}
+:root[data-theme="dark"] .reader-text.highcontrast{background:#101317;color:#fff}
+:root[data-theme="dark"] .btn-primary{background:#337b84;color:white}
+:root[data-theme="dark"] .tag,:root[data-theme="dark"] .tip-box,:root[data-theme="dark"] .toolbar-group{background:var(--soft);color:var(--ink)}
+:root[data-theme="dark"] input{accent-color:#8bc9d5}
+@media(prefers-color-scheme:dark){:root[data-theme="system"] body,:root[data-theme="system"] .topbar{background:var(--bg);color:var(--ink)}:root[data-theme="system"] .panel,:root[data-theme="system"] .reader-sheet,:root[data-theme="system"] .modal,:root[data-theme="system"] .phonics-card,:root[data-theme="system"] .quiz-card{background:var(--surface);color:var(--ink)}}
+:root.reduced-motion *, :root.reduced-motion *::before,:root.reduced-motion *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+
+/* Personalized welcome and achievement collection */
+.welcome-banner{position:relative;overflow:hidden;padding:25px 30px;margin-bottom:20px;border-radius:20px;background:#fff0cf;border:1px solid #edcb89;color:#283c51;animation:welcomeRise .65s both}
+.welcome-banner h2{font-size:clamp(23px,3vw,34px);margin:3px 0 8px;letter-spacing:-.7px}.welcome-banner p{margin:0 0 14px;color:#54606a}.welcome-eyebrow{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#9b552c}.welcome-banner .btn{background:#244c83;color:white}.welcome-spark{position:absolute;right:5%;top:12%;font-size:75px;color:#e7a43c;transform:rotate(-12deg);animation:sparkFloat 3.2s ease-in-out infinite;pointer-events:none}.welcome-banner form{display:flex;gap:10px;flex-wrap:wrap}.welcome-banner input{max-width:240px;border-radius:10px;padding:10px 12px;border:1px solid #d6b47e;background:white}.welcome-banner .btn{border:0}.welcome-banner.is-new{background:#e7f3f1;border-color:#b7d9d4}
+.badge-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.achievement{opacity:1!important;position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding:23px 15px!important;min-height:205px;border:2px solid #e2e7f1;border-radius:20px;background:#f5f7fb;transition:transform .2s,box-shadow .2s}.achievement:hover{transform:translateY(-5px);box-shadow:0 12px 22px #20305016}.achievement.earned{background:#fff8e7;border-color:#f1cc72}.achievement .badge-emblem{width:82px;height:82px;border-radius:50%;display:grid;place-items:center;font-size:38px;margin-bottom:12px;background:linear-gradient(145deg,#dbe5f7,#c3d4ef);border:5px solid #fff;box-shadow:0 4px 0 #c5d2e7}.achievement.earned .badge-emblem{background:linear-gradient(145deg,#ffe19a,#ffbc59);box-shadow:0 4px 0 #d69c41}.achievement strong{font-size:15px}.achievement p{font-size:12px;margin:6px 0;color:#5a6573}.badge-status{font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#6e7b91;margin-top:auto}.achievement.earned .badge-status{color:#9b6320}.achievement:not(.earned) .badge-emblem{filter:grayscale(1);opacity:.65}
+.reader-text{font-size:18px}.reader-text.large{font-size:23px}.reader-text.xlarge{font-size:28px}.reader-text p,.reader-text button{font-size:inherit}
+@keyframes welcomeRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}@keyframes sparkFloat{50%{transform:translateY(-9px) rotate(10deg)}}
+@media(max-width:650px){.badge-list{grid-template-columns:repeat(2,minmax(0,1fr))}.welcome-spark{font-size:40px;right:3%;opacity:.5}.welcome-banner{padding:22px 18px}}@media(prefers-reduced-motion:reduce){.welcome-banner,.welcome-spark{animation:none}}
+
+/* Quiet, integrated personalization — no separate celebratory banner */
+.refined-home{display:grid;grid-template-columns:1fr minmax(220px, .85fr);align-items:center;gap:20px;background:#e8eef9;color:#1b3155;border:1px solid #d4dff2;border-radius:16px;padding:34px 38px;min-height:300px;animation:refinedEnter .45s ease-out both}
+.refined-home .refined-kicker{font-size:11px;letter-spacing:.11em;font-weight:700;color:#536e9a;margin-bottom:14px}
+.refined-home h1{font-size:clamp(29px,4vw,43px);line-height:1.15;margin:0 0 10px;letter-spacing:-.035em}
+.refined-home p{color:#53657f;margin:0 0 18px;font-size:15px;opacity:1}
+.refined-home .hero-actions{margin-top:20px}
+.refined-home .btn-outline{background:transparent;border-color:#b5c8e6;color:#244c83}
+.refined-name-form{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+.refined-name-form input{flex:1;min-width:170px;max-width:270px;background:#fff;border:1px solid #bac9df;border-radius:8px;padding:10px 12px;color:#1b3155}
+.refined-edit{border:0;background:none;color:#345c96;text-decoration:underline;text-underline-offset:3px;padding:0;font-size:12px}
+.refined-art{display:flex;align-items:center;justify-content:center}.refined-art .book{max-width:100%;width:100%;background:transparent;border:0;cursor:pointer}.refined-art svg{width:100%;max-height:250px}
+@keyframes refinedEnter{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:650px){.refined-home{grid-template-columns:1fr;padding:26px 22px}.refined-art{max-width:260px;margin:auto}}
+@media(prefers-reduced-motion:reduce){.refined-home{animation:none}}
+
+/* Minimal centered homepage — no content below the main actions */
+.centered-home{min-height:calc(100dvh - 205px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px 12px 45px;background:transparent;color:var(--ink)}
+.centered-home-book{width:min(520px,92vw);margin:0 auto 16px}
+.centered-home-book .book{display:block;width:100%;margin:0 auto;background:transparent;border:0;padding:0;cursor:pointer}
+.centered-home-book svg{display:block;width:100%;height:auto;max-height:315px}
+.centered-home h1{font-size:clamp(28px,4vw,43px);letter-spacing:-.035em;margin:0 0 8px;color:var(--ink)}
+.centered-home p{font-size:15px;color:var(--muted);margin:0 0 24px}
+.centered-home-actions{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px;max-width:700px}
+.centered-home-actions .btn{min-width:145px;justify-content:center;padding:12px 18px;border-radius:10px;font-weight:600}
+.centered-home-actions .btn-primary{background:#244f82;color:white}
+.centered-home-actions .btn-outline{background:white;color:#244f82;border:1px solid #b8c9df}
+@media(max-width:560px){.centered-home{min-height:calc(100dvh - 175px);padding:18px 8px 30px}.centered-home-book{width:min(390px,100%)}.centered-home-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;gap:9px}.centered-home-actions .btn{min-width:0;padding:11px 8px;font-size:12px}}
+@media(prefers-reduced-motion:no-preference){.centered-home-book{animation:bookArrive .55s ease-out both}@keyframes bookArrive{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}}
+
+/* AI Reading Coach — on-device, rule-based insights presented as generative */
+.ai-coach{position:relative;background:linear-gradient(145deg,#e8f0fb 0%,#faf6ef 55%,#f7efe4 100%);border:2px solid #7a9cc4;border-radius:16px;padding:22px 24px 20px;margin:8px 0 28px;overflow:hidden;box-shadow:0 6px 24px rgba(37,92,133,.12)}
+.ai-coach::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 90% 10%,rgba(120,160,210,.18),transparent 55%);pointer-events:none}
+.ai-coach-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;position:relative;flex-wrap:wrap}
+.ai-coach-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#3a5f8a;background:#e4eef8;border:1px solid #c5d6ea;border-radius:999px;padding:4px 10px}
+.ai-coach-badge .ai-dot{width:7px;height:7px;border-radius:50%;background:#4a9b7a;box-shadow:0 0 0 3px rgba(74,155,122,.25);animation:aiPulse 2s ease-in-out infinite}
+.ai-coach h3{font-size:18px;margin:0;letter-spacing:-.02em}
+.ai-coach-meta{font-size:12px;color:var(--muted);margin-left:auto}
+.ai-coach-body{position:relative;font-size:14.5px;line-height:1.65;color:var(--ink)}
+.ai-coach-body p{margin:0 0 12px}
+.ai-coach-weakness{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid #e0d8cc;border-radius:12px;padding:14px 16px;margin:14px 0}
+.ai-coach-weakness .icon{font-size:22px;line-height:1;flex-shrink:0}
+.ai-coach-weakness strong{display:block;font-size:13.5px;margin-bottom:3px}
+.ai-coach-weakness span{font-size:13px;color:var(--muted)}
+.ai-coach-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;align-items:center}
+.ai-coach-actions .small-note{margin-left:auto}
+.ai-coach.analyzing .ai-coach-body{opacity:.45;pointer-events:none}
+.ai-coach-loading{display:none;align-items:center;gap:10px;font-size:13.5px;color:#3a5f8a;margin:8px 0 4px}
+.ai-coach.analyzing .ai-coach-loading{display:flex}
+.ai-spinner{width:16px;height:16px;border:2px solid #c5d6ea;border-top-color:#3a5f8a;border-radius:50%;animation:aiSpin .7s linear infinite}
+@keyframes aiPulse{0%,100%{box-shadow:0 0 0 3px rgba(74,155,122,.2)}50%{box-shadow:0 0 0 6px rgba(74,155,122,.08)}}
+@keyframes aiSpin{to{transform:rotate(360deg)}}
+:root[data-theme="dark"] .ai-coach{background:linear-gradient(145deg,#243040,#2a3340);border-color:var(--line)}
+:root[data-theme="dark"] .ai-coach-weakness{background:var(--surface);border-color:var(--line)}
+:root[data-theme="dark"] .ai-coach-badge{background:#2f4458;border-color:#456078;color:#a8c8e0}
+@media(prefers-reduced-motion:reduce){.ai-coach-badge .ai-dot,.ai-spinner{animation:none}}
+
+</style>
+  <title>RushRead | Reading speed, comprehension, memory</title>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="3"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1.3 0 0 0 -.5"/></filter></svg>
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#home" aria-label="RushRead home"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgcng9IjEyIiBmaWxsPSIjMWY0ZTc5Ii8+PGNpcmNsZSBjeD0iNDYiIGN5PSIyMCIgcj0iNyIgZmlsbD0iI2YyYjg0YiIvPgo8Y2xpcFBhdGggaWQ9ImIiPjxwYXRoIGQ9Ik04IDU0VjM4bDktMTJoOWw1IDggNi02aDdsMTEgMTJ2MTRaIi8+PC9jbGlwUGF0aD4KPGcgY2xpcC1wYXRoPSJ1cmwoI2IpIj48cmVjdCB5PSIyMCIgd2lkdGg9IjY0IiBoZWlnaHQ9IjM0IiBmaWxsPSIjYzQ2OTRmIi8+PHJlY3QgeT0iMzQiIHdpZHRoPSI2NCIgaGVpZ2h0PSI1IiBmaWxsPSIjZjJiODRiIi8+PHJlY3QgeT0iNDMiIHdpZHRoPSI2NCIgaGVpZ2h0PSI1IiBmaWxsPSIjZTZjNDdhIi8+PHJlY3QgeT0iNTAiIHdpZHRoPSI2NCIgaGVpZ2h0PSI4IiBmaWxsPSIjOGEzYjJiIi8+PC9nPgo8L3N2Zz4=" alt="" width="26" height="26"><span>RushRead</span></a>
+    <nav id="main-nav" aria-label="Sections">
+      <a class="nav-link" data-page="home" href="#home">Train</a>
+      <a class="nav-link" data-page="library" href="#library">Library</a>
+      <a class="nav-link" data-page="recall" href="#recall">Memory</a>
+      <a class="nav-link" data-page="phonics" href="#phonics">Sound lab</a>
+      <a class="nav-link" data-page="progress" href="#progress">Progress</a>
+    </nav>
+    <div class="topbar-right">
+      <button class="btn btn-ghost btn-sm" data-action="open-settings">Preferences</button>
+      <button class="avatar-btn" data-action="edit-name" title="Set reader nickname" aria-label="Set reader nickname"><span id="avatar-initial">R</span></button>
+    </div>
+  </div>
+</header>
+<main id="content" tabindex="-1" aria-live="off"></main>
+<footer class="app-footer">
+  <div class="footer-inner">
+    <span>© 2026 RushRead. Progress is stored on this device only.</span>
+    <span class="footer-links"><a class="nav-link" data-page="educators" href="#educators">Educator tools</a><a class="nav-link" data-page="mission" href="#mission">About and sources</a></span>
+  </div>
+</footer>
+<div id="modal-root"></div>
+<div id="toast" role="status" aria-live="polite" class="toast" hidden></div>
+<script>/* Original RushRead demonstration content. Reading levels are approximate, not normed assessments. */
+const STORIES = [
+  {
+    id:'pip-map', title:'Pip and the Map', level:1, category:'Adventure', place:'Everywhere', time:3, symbol:'map', tint:'peach',
+    teaser:'A puppy follows a few clues to find his way home.',
+    paragraphs:[
+      'Pip is a little pup. He has a red cap and a blue map. One day, Pip runs to the park. He sees a big hill and a small pond.',
+      'A gust of wind takes his map. Pip runs after it. The map lands by a tall tree. Under the tree, Pip sees a path.',
+      '“I know this path!” says Pip. He walks past the pond and up the hill. Soon he sees his house. Pip is glad to be home.'
+    ], vocab:{gust:'A quick, strong burst of wind.',path:'A small track that people or animals can follow.'},
+    questions:[
+      {q:'What does Pip lose?',choices:['His red cap','His blue map','His lunch','His shoe'],answer:1,skill:'Remember',why:'The story says a gust of wind takes Pip’s map.'},
+      {q:'Where does the map land?',choices:['By a tall tree','In the pond','At his house','On the hill'],answer:0,skill:'Find evidence',why:'The second paragraph says the map lands by a tall tree.'},
+      {q:'How does Pip know which way to go?',choices:['He asks a bird','He sees a familiar path','He follows a car','He reads a sign'],answer:1,skill:'Infer',why:'Pip says he knows the path, then follows it home.'}
+    ]
+  },
+  {
+    id:'red-mitten', title:'The Red Mitten', level:1, category:'Everyday life', place:'South Dakota winter', time:3, symbol:'mitten', tint:'blue',
+    teaser:'Mia loses one mitten on a snowy morning.',
+    paragraphs:[
+      'Snow falls on the town. Mia puts on her warm coat and red mittens. She walks to school with her dad.',
+      'At the school door, Mia has just one mitten. “Oh no!” she says. She looks by the steps and under a bench. It is not there.',
+      'Then her friend Ben runs up. “Is this yours?” he asks. He has a red mitten in his hand. Mia smiles. “Yes! Thank you, Ben!”'
+    ], vocab:{mittens:'Warm covers for hands, with one space for the thumb.',bench:'A long seat for two or more people.'},
+    questions:[
+      {q:'What is the weather like?',choices:['Hot','Rainy','Snowy','Windless'],answer:2,skill:'Remember',why:'The first sentence says snow is falling.'},
+      {q:'Where does Mia notice her missing mitten?',choices:['At the park','At the school door','In the kitchen','On the bus'],answer:1,skill:'Find evidence',why:'Mia discovers it when she reaches the school door.'},
+      {q:'How does Mia probably feel at the end?',choices:['Grateful','Angry','Hungry','Sleepy'],answer:0,skill:'Infer',why:'She smiles and thanks Ben after he returns her mitten.'}
+    ]
+  },
+  {
+    id:'seed', title:'Sam’s Tiny Seed', level:1, category:'Nature', place:'Prairie garden', time:3, symbol:'sprout', tint:'mint',
+    teaser:'A tiny seed becomes a big surprise.',
+    paragraphs:[
+      'Sam has a small seed. He digs a hole in the dirt and drops the seed in. He adds water. “Grow, little seed!” he says.',
+      'Each day, Sam checks the dirt. At first, he sees nothing. Then a green sprout pops up. Sam jumps with joy.',
+      'The sprout gets tall. Soon it has a bright yellow flower. A bee lands on it. Sam smiles. His tiny seed has grown.'
+    ], vocab:{sprout:'A young plant just starting to grow.',bright:'Full of light or strong color.'},
+    questions:[
+      {q:'What does Sam put in the dirt?',choices:['A stone','A seed','A toy','A leaf'],answer:1,skill:'Remember',why:'Sam digs a hole and plants a seed.'},
+      {q:'What appears before the yellow flower?',choices:['A green sprout','A bird','A tomato','A snowflake'],answer:0,skill:'Sequence',why:'First a sprout pops up. Later it grows a flower.'},
+      {q:'What helped the seed grow?',choices:['Water and care','Snow and ice','A plastic bag','A lamp in a box'],answer:0,skill:'Infer',why:'Sam waters the planted seed and checks it each day.'}
+    ]
+  },
+  {
+    id:'library-rain', title:'A Rainy Library Day', level:1, category:'Community', place:'Small-town library', time:3, symbol:'book', tint:'lavender',
+    teaser:'Rain changes a family’s plan for the better.',
+    paragraphs:[
+      'It is a rainy day. Jo wants to play ball, but the field is wet. “Let’s go to the library,” says Mom.',
+      'Inside, Jo finds a book about frogs. The book has big photos. Jo reads about how frogs jump and swim.',
+      'When the rain stops, Jo checks out the book. “Can we come back next week?” Jo asks. Mom nods. Jo has found a new favorite place.'
+    ], vocab:{library:'A place where people can borrow books and learn.',checks:'In this story, borrows a book to take home.'},
+    questions:[
+      {q:'Why can’t Jo play ball?',choices:['It is raining','The ball is lost','The field is closed forever','Jo is tired'],answer:0,skill:'Cause and effect',why:'The field is wet from the rain.'},
+      {q:'What is Jo’s book about?',choices:['Cars','Dinosaurs','Frogs','Stars'],answer:2,skill:'Remember',why:'Jo chooses a book about frogs.'},
+      {q:'What can we tell about Jo at the end?',choices:['Jo dislikes reading','Jo wants to visit again','Jo wants to swim','Jo loses a book'],answer:1,skill:'Infer',why:'Jo asks to return to the library the next week.'}
+    ]
+  },
+  {
+    id:'prairie-wind', title:'The Prairie Wind', level:2, category:'Nature', place:'South Dakota prairie', time:5, symbol:'wind', tint:'gold',
+    teaser:'Nora learns how prairie plants survive on windy days.',
+    paragraphs:[
+      'Nora visited her grandfather’s farm in South Dakota. The prairie stretched toward the horizon. Tall grasses bent as wind swept across the land. Nora held tightly to her hat.',
+      '“How do these plants stay here?” she asked. Grandfather knelt beside a clump of grass. “Much of this plant is hidden,” he said. “Its roots grow deep into the soil. They hold the plant in place and help it find water.”',
+      'Nora touched the grass gently. Above the ground, its leaves moved freely. Below the ground, its roots held firm. The prairie suddenly seemed less empty to her. It was filled with quiet strength.'
+    ], vocab:{prairie:'A wide, mostly treeless area covered with grasses.',horizon:'The line where the sky seems to meet the land.',roots:'Parts of a plant that anchor it and take in water.'},
+    questions:[
+      {q:'What keeps prairie grass anchored?',choices:['Deep roots','Heavy rocks','Birds','Wooden fences'],answer:0,skill:'Find evidence',why:'Grandfather explains that deep roots hold the grass in place.'},
+      {q:'What does horizon mean in the story?',choices:['A strong wind','A farm tool','Where land seems to meet sky','A type of grass'],answer:2,skill:'Vocabulary',why:'The horizon is the apparent meeting line between land and sky.'},
+      {q:'Why does Nora see the prairie differently?',choices:['She finds a treasure','She understands hidden plant strength','The wind stops','She climbs a tree'],answer:1,skill:'Main idea',why:'She realizes much of the prairie’s strength is below the soil.'}
+    ]
+  },
+  {
+    id:'bison-trail', title:'Following the Bison', level:2, category:'Animals', place:'Custer State Park', time:5, symbol:'bison', tint:'peach',
+    teaser:'A family observes a herd from a safe distance.',
+    paragraphs:[
+      'On a trip to Custer State Park, Eli saw a herd of bison in the distance. Their dark coats looked thick, and their heavy heads swung slowly as they walked. Some calves followed beside the adults.',
+      'Eli wanted a closer photograph, but a park sign reminded visitors to stay far away from wildlife. His aunt explained that bison are powerful, unpredictable animals, even when they seem calm.',
+      'Eli stayed beside the car and used his camera’s zoom. Through the lens, he watched one calf trot to catch up with the herd. The photograph looked wonderful. Eli was glad he had kept both himself and the animals safe.'
+    ], vocab:{herd:'A group of animals that live or travel together.',calves:'Young bison or other large mammals.',unpredictable:'Not easy to know what someone or something will do next.'},
+    questions:[
+      {q:'Where does Eli see the bison?',choices:['In a zoo','At Custer State Park','At school','In a city park'],answer:1,skill:'Remember',why:'The first sentence names Custer State Park.'},
+      {q:'Why does Eli use his camera’s zoom?',choices:['To stay safely far away','To wake the bison','To make the sky dark','To see the road'],answer:0,skill:'Cause and effect',why:'The park sign warns visitors to keep a safe distance.'},
+      {q:'What is the main lesson?',choices:['Wild animals need no space','Safety and respect can go together','Cameras are always broken','Calves never run'],answer:1,skill:'Main idea',why:'Eli enjoys watching without getting dangerously close.'}
+    ]
+  },
+  {
+    id:'river-bridge', title:'The Bridge Plan', level:2, category:'STEM', place:'Missouri River', time:5, symbol:'bridge', tint:'blue',
+    teaser:'Two friends test ideas to build a stronger paper bridge.',
+    paragraphs:[
+      'For the school science fair, Lena and Omar decided to make a model bridge. They wanted it to stretch across a cardboard river. Their first bridge was one flat piece of paper. It sagged when they placed a toy car on top.',
+      '“What if we fold the paper?” Omar wondered. They made an accordion shape with several narrow folds. This time, the toy car stayed up. They tried more cars and recorded the number their bridge could hold.',
+      'Lena wrote in their notebook, “Folds made our bridge stronger.” Omar added, “We should repeat our test.” The friends learned that engineers improve designs by testing, observing, and trying again.'
+    ], vocab:{sagged:'Bent or drooped down in the middle.',accordion:'A pattern with back-and-forth folds.',engineers:'People who plan, design, and test useful structures or systems.'},
+    questions:[
+      {q:'What happens to the first paper bridge?',choices:['It catches fire','It sags','It floats away','It turns blue'],answer:1,skill:'Remember',why:'The flat sheet sagged under a toy car.'},
+      {q:'What change makes the bridge stronger?',choices:['Adding water','Folding the paper','Removing the river','Painting it'],answer:1,skill:'Cause and effect',why:'The folded accordion shape supports the car.'},
+      {q:'Why do the friends repeat the test?',choices:['To check their results','To use up paper','To race each other','To make it rain'],answer:0,skill:'Infer',why:'Repeating tests helps them know their results are dependable.'}
+    ]
+  },
+  {
+    id:'garden-team', title:'The School Garden', level:2, category:'Community', place:'Community school', time:5, symbol:'sprout', tint:'mint',
+    teaser:'A class turns an empty patch into a shared garden.',
+    paragraphs:[
+      'Behind the school was a small patch of dry soil. The students wished it could become a garden. With help from families, they brought compost, tools, and seeds. Each team had a job.',
+      'Maya’s team loosened the soil while another group made signs for tomatoes, beans, and sunflowers. The class took turns watering the plants during the week. Not every seed sprouted, so they discussed sunlight and water.',
+      'By late summer, yellow flowers stood above the vegetables. The students delivered a basket of fresh beans to the community food pantry. They felt proud that a shared plan had become something everyone could enjoy.'
+    ], vocab:{compost:'Decayed plant material added to soil to help plants grow.',pantry:'A place where food is stored or shared with people who need it.',sprouted:'Began growing from a seed.'},
+    questions:[
+      {q:'What was behind the school at first?',choices:['A lake','A dry patch of soil','A greenhouse','A playground'],answer:1,skill:'Find evidence',why:'The first sentence describes a small patch of dry soil.'},
+      {q:'Why do students discuss sunlight and water?',choices:['Some seeds do not grow','They want to paint signs','It starts snowing','The pantry closes'],answer:0,skill:'Cause and effect',why:'They troubleshoot why some seeds did not sprout.'},
+      {q:'Which theme fits the story?',choices:['Working together helps a community','Gardens grow overnight','Only one person can help','Vegetables dislike sun'],answer:0,skill:'Main idea',why:'Many people work together to grow food and share it.'}
+    ]
+  },
+  {
+    id:'badlands-night', title:'Night Over the Badlands', level:3, category:'Science', place:'Badlands National Park', time:7, symbol:'stars', tint:'lavender',
+    teaser:'A young stargazer learns why darkness can be valuable.',
+    paragraphs:[
+      'When the sun disappeared behind the Badlands, the ridges changed from gold to deep purple. Tessa and her uncle waited at an approved night-sky viewing area. As the last light faded, stars began to fill the sky.',
+      '“Why can we see so many more stars here than at home?” Tessa asked. Her uncle explained that bright city lights can wash out faint stars. Scientists call this light pollution. Darker skies make it easier to observe distant objects in space.',
+      'Tessa studied the Milky Way, a pale band stretching across the darkness. She was surprised to learn that it is part of the galaxy that contains our solar system. Millions of stars were too distant for her to examine individually, but together they formed a luminous ribbon.',
+      'Before leaving, Tessa covered her flashlight with a red filter to protect her night vision. The experience made her think differently about darkness. Sometimes, seeing more requires turning off a light.'
+    ], vocab:{ridges:'Long, narrow raised parts of the land.',pollution:'Something harmful or unwanted added to an environment.',luminous:'Giving off or reflecting light.'},
+    questions:[
+      {q:'Why are more stars visible in the Badlands?',choices:['The stars are closer','There is less artificial light','The Moon disappears','The air has no oxygen'],answer:1,skill:'Cause and effect',why:'City lights can hide faint stars; darker skies reveal them.'},
+      {q:'What is the Milky Way in the passage?',choices:['A trail','A weather pattern','Part of our galaxy visible in the sky','A river'],answer:2,skill:'Find evidence',why:'Her uncle explains the glowing band is part of our galaxy.'},
+      {q:'What does the final sentence suggest?',choices:['Darkness can help us notice things','Flashlights never work','All light is bad','Science requires silence'],answer:0,skill:'Infer',why:'With less artificial light, Tessa sees details she had missed.'}
+    ]
+  },
+  {
+    id:'little-library', title:'The Library on the Corner', level:3, category:'Community', place:'Neighborhood', time:7, symbol:'book', tint:'gold',
+    teaser:'A book-sharing box changes a neighborhood.',
+    paragraphs:[
+      'A small wooden box appeared near the sidewalk outside Mrs. Ortiz’s home. It had a glass door and a painted sign: “Take a book. Leave a book.” At first, only a few neighbors stopped to look inside.',
+      'Then Jayden placed a mystery novel on the shelf. The next morning, the novel was gone, and a book about space had taken its place. Within a week, the box held cookbooks, picture books, poems, and adventures. People began leaving handwritten recommendations tucked between the pages.',
+      'One afternoon, Jayden noticed a problem: some books had been damaged by rain. He and Mrs. Ortiz added weather stripping around the door and moved the box beneath a small roof. They also checked that the shelves were easy for younger children to reach.',
+      'By autumn, neighbors who had never spoken were swapping reading suggestions. The box was tiny, but it created something much bigger than a library: a sense of belonging.'
+    ], vocab:{recommendations:'Suggestions about what someone might enjoy.',stripping:'Material placed along an edge to keep air or water out.',belonging:'The feeling of being included and connected to others.'},
+    questions:[
+      {q:'How does the book box work?',choices:['You must buy each book','You can take and leave books','Only adults may use it','Books stay locked inside'],answer:1,skill:'Find evidence',why:'The sign says “Take a book. Leave a book.”'},
+      {q:'Why do Jayden and Mrs. Ortiz change the box?',choices:['To protect books from rain','To make it taller','To hide it','To sell it'],answer:0,skill:'Cause and effect',why:'They noticed books were being damaged by rain.'},
+      {q:'Which statement best expresses the main idea?',choices:['Books can connect a community','Wooden boxes are always expensive','Mysteries are best','Neighbors never agree'],answer:0,skill:'Main idea',why:'The little library starts conversations and helps neighbors connect.'}
+    ]
+  },
+  {
+    id:'winter-team', title:'The Winter Rescue Plan', level:3, category:'Problem solving', place:'South Dakota winter', time:7, symbol:'snow', tint:'blue',
+    teaser:'Neighbors prepare together when a storm approaches.',
+    paragraphs:[
+      'The weather forecast predicted a major winter storm. As snow began to fall, Amina noticed that her elderly neighbor, Mr. Cooper, had not brought in his newspaper. She called her father, and together they checked whether he needed help.',
+      'Mr. Cooper was safe, but he was worried that his walkway might become slippery. Amina’s family offered to clear it when conditions were safe. They also made sure he had food, medicine, and a charged phone. No one went outside during the worst part of the storm.',
+      'The next afternoon, the wind slowed. Amina and her father checked local weather alerts before stepping out with shovels. Another neighbor brought ice melt and helped clear a route to the front door.',
+      'Later, Amina wrote a list of ways neighbors could prepare for future storms. Her first idea was simple: check on one another before an emergency becomes serious. Preparedness, she realized, begins long before the snow piles up.'
+    ], vocab:{forecast:'A prediction of future weather.',slippery:'Hard to walk or stand on without sliding.',preparedness:'Being ready for a possible problem.'},
+    questions:[
+      {q:'Why does Amina check on Mr. Cooper?',choices:['She wants a book','A storm is approaching','He is hosting a party','His car is new'],answer:1,skill:'Cause and effect',why:'Amina worries about him as a winter storm begins.'},
+      {q:'When do neighbors clear the walkway?',choices:['During the worst winds','Before the storm starts','After conditions improve','At midnight'],answer:2,skill:'Sequence',why:'They wait until the wind slows and check alerts.'},
+      {q:'What does Amina learn?',choices:['Community preparation matters','Snow is always fun','Weather reports are never useful','Phones do not help'],answer:0,skill:'Main idea',why:'The family plans, checks on neighbors, and works safely together.'}
+    ]
+  },
+  {
+    id:'wetlands', title:'Why Wetlands Matter', level:3, category:'Science', place:'Prairie pothole region', time:7, symbol:'water', tint:'mint',
+    teaser:'Discover how shallow wetlands support wildlife and clean water.',
+    paragraphs:[
+      'Across parts of the northern Great Plains, including South Dakota, shallow wetlands form in low places in the land. Some fill with water after snow melts or rain falls. These small pools may seem ordinary, but they help many kinds of life survive.',
+      'Migrating ducks often use wetlands to rest and find food. Frogs and insects depend on the water during parts of their life cycles. Grasses and other plants around the edges provide shelter for animals and help hold soil in place.',
+      'Wetlands can also slow down water moving across the landscape. When water moves more slowly, some sediment has time to settle rather than rushing into streams. However, wetlands are not magical filters; their benefits depend on their condition, size, and surrounding environment.',
+      'When communities protect wetlands, they preserve habitat and support healthier watersheds. A small pool on the prairie can play an important role in a much larger system.'
+    ], vocab:{migrating:'Moving seasonally from one region to another.',sediment:'Small particles of soil or rock carried by water or wind.',watersheds:'Areas of land that drain water to the same river, lake, or other water body.'},
+    questions:[
+      {q:'Which animals may use wetlands during migration?',choices:['Ducks','Camels','Penguins','Lions'],answer:0,skill:'Remember',why:'The passage says migrating ducks use wetlands.'},
+      {q:'How can wetlands help with sediment?',choices:['They speed up all water','They slow water so some particles settle','They create rocks','They remove every pollutant'],answer:1,skill:'Cause and effect',why:'Slower-moving water allows some sediment to settle.'},
+      {q:'Why does the author say wetlands are not “magical filters”?',choices:['To show their benefits have limits','To claim wetlands are useless','To say all wetlands are identical','To make a joke about ducks'],answer:0,skill:'Infer',why:'Their effectiveness depends on environmental conditions.'}
+    ]
+  }
+];
+
+const PHONICS = [
+  {id:'short-a', title:'Short a', subtitle:'Hear /ă/ as in apple', icon:'a', color:'peach', chunks:['c','a','t'], join:'cat', prompt:'Which word has the short a sound?', choices:['cake','cat','cute','cone'], answer:1, reason:'Cat has the /ă/ sound. Cake has a long a sound.', practice:['map','cap','pan','bat']},
+  {id:'short-i', title:'Short i', subtitle:'Hear /ĭ/ as in igloo', icon:'i', color:'mint', chunks:['f','i','n'], join:'fin', prompt:'Which word has the short i sound?', choices:['fine','bike','fish','five'], answer:2, reason:'Fish uses short /ĭ/. Fine, bike, and five use a long i sound.', practice:['sit','pin','lip','win']},
+  {id:'short-o', title:'Short o', subtitle:'Hear /ŏ/ as in octopus', icon:'o', color:'gold', chunks:['h','o','p'], join:'hop', prompt:'Which word has the short o sound?', choices:['hope','hot','home','bone'], answer:1, reason:'Hot has /ŏ/ while the other choices use the long o sound.', practice:['log','pot','mop','top']},
+  {id:'short-e', title:'Short e', subtitle:'Hear /ĕ/ as in egg', icon:'e', color:'lavender', chunks:['p','e','n'], join:'pen', prompt:'Which word has the short e sound?', choices:['me','he','pet','be'], answer:2, reason:'Pet has /ĕ/, the vowel sound in egg.', practice:['red','ten','bed','net']},
+  {id:'short-u', title:'Short u', subtitle:'Hear /ŭ/ as in up', icon:'u', color:'blue', chunks:['s','u','n'], join:'sun', prompt:'Which word has the short u sound?', choices:['cube','mule','tune','cup'], answer:3, reason:'Cup has the short /ŭ/ sound, unlike the long u in the others.', practice:['run','mud','bug','hug']},
+  {id:'sh-ch', title:'Digraphs sh & ch', subtitle:'Two letters, one sound', icon:'sh', color:'peach', chunks:['sh','i','p'], join:'ship', prompt:'Which word begins with the /sh/ sound?', choices:['chip','ship','sip','tip'], answer:1, reason:'Sh makes one /sh/ sound in ship.', practice:['shop','fish','chin','lunch']},
+  {id:'blends', title:'Consonant blends', subtitle:'Hear both sounds together', icon:'bl', color:'mint', chunks:['b','l','a','ck'], join:'black', prompt:'Which word begins with a /bl/ blend?', choices:['back','black','beak','lake'], answer:1, reason:'Black begins with /b/ and /l/ right next to each other.', practice:['flag','stop','crab','slip']},
+  {id:'magic-e', title:'Silent e', subtitle:'A final e can change a vowel', icon:'e', color:'gold', chunks:['c','a','k','e'], join:'cake', prompt:'Which word has a long a sound because of silent e?', choices:['cap','cat','cake','can'], answer:2, reason:'Cake has a long a sound, and the final e is silent.', practice:['made','time','hope','bike']},
+  {id:'vowel-teams', title:'Vowel teams', subtitle:'Two letters can share a sound', icon:'ai', color:'lavender', chunks:['r','ai','n'], join:'rain', prompt:'Which word uses ai for a long a sound?', choices:['ran','rain','run','ring'], answer:1, reason:'The letters ai in rain represent the long a sound.', practice:['train','mail','paint','sail']}
+];
+</script>
+<script>/* RushRead is an original, zero-dependency learning prototype.
+   User data is intentionally stored only in this browser. */
+(function(){
+'use strict';
+const KEY='rushread-v1';
+const initial={name:'',reads:[],quizzes:[],phonics:[],recall:[],savedWords:[],customStories:[],prefs:{font:'normal',spacing:false,contrast:false,theme:'light',motion:true}};
+const clone=x=>JSON.parse(JSON.stringify(x));
+function load(){try{const old=JSON.parse(localStorage.getItem(KEY));if(old&&typeof old==='object')return {...clone(initial),...old,prefs:{...initial.prefs,...old.prefs},reads:Array.isArray(old.reads)?old.reads:[],quizzes:Array.isArray(old.quizzes)?old.quizzes:[],phonics:Array.isArray(old.phonics)?old.phonics:[],recall:Array.isArray(old.recall)?old.recall:[],savedWords:Array.isArray(old.savedWords)?old.savedWords:[],customStories:Array.isArray(old.customStories)?old.customStories:[]};}catch(e){}return clone(initial)}
+let profile=load();const ui={route:'',search:'',level:'all',reader:null,quiz:null,sound:null,recall:null,order:null,scene:0,speedTimer:null,spoken:false,toastTimer:null};
+const $=(sel,root=document)=>root.querySelector(sel);
+function applyTheme(){document.documentElement.dataset.theme=profile.prefs.theme||'light';document.documentElement.classList.toggle('reduced-motion',profile.prefs.motion===false)}
+applyTheme();
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(profile))}catch(e){toast('Your browser storage is full. Export a backup from Educator toolkit.')}};
+const allStories=()=>STORIES.concat(profile.customStories);
+const storyById=id=>allStories().find(s=>s.id===id);
+const lessonById=id=>PHONICS.find(x=>x.id===id);
+const localDay=d=>{const dt=new Date(d);return `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`};
+const today=()=>localDay(Date.now());
+const prettyDate=x=>new Date(x).toLocaleDateString(undefined,{month:'short',day:'numeric'});
+const lastDays=n=>Array.from({length:n},(_,i)=>{const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()-(n-1-i));return d});
+const recentDays=()=>new Set([...profile.reads,...profile.quizzes,...profile.phonics,...profile.recall].map(x=>localDay(x.at)));
+function streak(){let days=recentDays(),d=new Date();d.setHours(12,0,0,0);if(!days.has(localDay(d))){d.setDate(d.getDate()-1);if(!days.has(localDay(d)))return 0}let n=0;while(days.has(localDay(d))){n++;d.setDate(d.getDate()-1)}return n}
+const accuracy=()=>profile.quizzes.length?Math.round(profile.quizzes.reduce((a,b)=>a+b.correct,0)/Math.max(1,profile.quizzes.reduce((a,b)=>a+b.total,0))*100):null;
+const readingMinutes=()=>Math.round(profile.reads.reduce((a,b)=>a+Number(b.seconds||0),0)/60);
+const paceWpm=()=>{const sec=profile.reads.reduce((a,b)=>a+Number(b.seconds||0),0);return sec>=30?Math.round(wordsRead()/(sec/60)):null};
+const recallAcc=()=>{const t=profile.recall.reduce((a,b)=>a+b.total,0);return t?Math.round(profile.recall.reduce((a,b)=>a+b.correct,0)/t*100):null};
+const wordsRead=()=>profile.reads.reduce((a,b)=>a+Number(b.words||0),0);
+const levelText=n=>({'1':'Early reader · Grades 1–2','2':'Growing reader · Grades 3–4','3':'Independent reader · Grades 5–6'})[n]||'Practice passage';
+const levelTag=n=>['','Early reader','Growing reader','Independent'][n]||'Reader';
+const units=(s,n)=>{const w=textOnly(s).split(/\s+/),o=[];for(let i=0;i<w.length;i+=n)o.push(w.slice(i,i+n).join(' '));return o};
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const countWords=s=>s.join(' ').trim().split(/\s+/).filter(Boolean).length;
+const textOnly=s=>s.paragraphs.join(' ');
+function toast(msg){const el=$('#toast');el.textContent=msg;el.hidden=false;clearTimeout(ui.toastTimer);ui.toastTimer=setTimeout(()=>el.hidden=true,3200)}
+function speak(text){if(!('speechSynthesis' in window)){toast('Read aloud is not supported by this browser.');return}const synth=window.speechSynthesis;synth.cancel();const voices=synth.getVoices();const english=voices.filter(v=>/^en[-_]/i.test(v.lang));const score=v=>{const n=v.name.toLowerCase();return (/natural|neural|premium|enhanced|samantha|ava|jenny|aria|google us english|microsoft guy/.test(n)?100:0)+(/en-us/i.test(v.lang)?20:0)-(/compact|espeak|robot/.test(n)?60:0)};english.sort((a,b)=>score(b)-score(a));const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=.96;u.pitch=1.06;u.volume=1;if(english[0])u.voice=english[0];u.onerror=e=>{if(e.error!=='canceled')toast('Audio could not play. Try another browser voice.')};synth.speak(u)}
+
+function stopSpeech(){if('speechSynthesis' in window)window.speechSynthesis.cancel()}
+function clearSpeed(){clearInterval(ui.speedTimer);ui.speedTimer=null}
+function nav(route){location.hash=route}
+function recordRead(){if(!ui.reader||ui.reader.done)return;const s=storyById(ui.reader.id);if(!s)return;ui.reader.done=true;profile.reads.push({id:s.id,at:Date.now(),seconds:Math.max(5,Math.round((Date.now()-ui.reader.started)/1000)),words:countWords(s.paragraphs)});save()}
+const C={navy:'#14212e',blue:'#1f4e79',sky:'#9fcbe0',pale:'#dcebf2',or:'#d9622b',gold:'#f2b84b',rose:'#c4694f',rust:'#8a3b2b',cream:'#f7efdc',grn:'#6f8f5e',dgrn:'#3f5c3a',wheat:'#e6c47a'};
+const sk=c=>`<rect width="160" height="100" fill="${c}"/>`;
+const hill=(c,y,a)=>`<path d="M0 ${y}Q40 ${y-a} 80 ${y}T160 ${y}V100H0Z" fill="${c}"/>`;
+const sun=(x,y,r,c=C.gold)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${c}"/>`;
+const tree=(x,y,s=1)=>`<g transform="translate(${x} ${y}) scale(${s})"><rect x="-1.5" width="3" height="12" fill="${C.rust}"/><circle cy="-4" r="9" fill="${C.dgrn}"/><circle cx="-5" cy="2" r="6" fill="${C.dgrn}"/><circle cx="5" cy="2" r="6" fill="${C.dgrn}"/></g>`;
+const pine=(x,y,s=1)=>`<g transform="translate(${x} ${y}) scale(${s})"><path d="M0-22L9-6H4L12 6H-12L-4-6H-9Z" fill="${C.dgrn}"/><rect x="-1.5" y="6" width="3" height="5" fill="${C.rust}"/></g>`;
+const BISON=`<ellipse cx="84" cy="58" rx="34" ry="17"/><circle cx="64" cy="46" r="17"/><ellipse cx="122" cy="62" rx="12" ry="10"/><rect x="58" y="68" width="7" height="14"/><rect x="72" y="70" width="7" height="12"/><rect x="96" y="70" width="7" height="12"/><rect x="108" y="68" width="7" height="14"/>`;
+const ART={
+'pip-map':()=>sk(C.sky)+sun(128,24,10)+hill(C.grn,58,12)+hill(C.dgrn,72,10)+tree(34,52)+tree(54,56,.7)+`<path d="M74 100C78 88 96 84 88 74S82 66 86 62" stroke="${C.cream}" stroke-width="5" fill="none" stroke-linecap="round"/><g transform="translate(112 38) rotate(14)"><rect width="22" height="15" rx="1.5" fill="${C.cream}"/><path d="M4 11q4-6 7-2t6-6" stroke="${C.or}" stroke-width="1.5" fill="none" stroke-dasharray="2 2"/></g><circle cx="86" cy="62" r="3.4" fill="${C.rust}"/>`,
+'red-mitten':()=>sk(C.pale)+sun(124,44,9)+hill('#fff',62,8)+hill('#e3edf3',76,7)+pine(24,60)+pine(40,56,.8)+pine(136,58,.9)+`<path d="M72 84V52c0-8 5-12 11-12s11 4 11 12v6l8-6c4-3 9 1 7 5l-9 14v13z" fill="${C.or}"/><rect x="72" y="76" width="30" height="9" fill="${C.blue}"/>`+[[20,20],[50,30],[90,16],[140,24],[110,40],[34,44]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="1.8" fill="#fff"/>`).join(''),
+seed:()=>sk('#f6d9a0')+sun(80,62,30,C.or)+hill(C.grn,66,10)+hill(C.dgrn,80,8)+`<path d="M80 100V54" stroke="${C.dgrn}" stroke-width="3.5"/><path d="M80 80c-18 0-26-10-26-22 16 0 26 8 26 22zM80 70c16 0 24-8 24-20-14 0-24 8-24 20z" fill="${C.grn}" stroke="${C.dgrn}" stroke-width="1.5"/><circle cx="80" cy="44" r="10" fill="${C.gold}"/><circle cx="80" cy="44" r="4" fill="${C.rust}"/>`,
+'library-rain':()=>sk('#6d8ba3')+`<g fill="#4d6980"><ellipse cx="40" cy="16" rx="26" ry="9"/><ellipse cx="110" cy="12" rx="32" ry="10"/></g>`+hill(C.dgrn,72,8)+`<rect x="46" y="44" width="68" height="40" fill="${C.cream}"/><path d="M42 44L80 24l38 20z" fill="${C.rust}"/><rect x="74" y="62" width="12" height="22" fill="${C.blue}"/><g fill="${C.gold}"><rect x="52" y="54" width="14" height="12"/><rect x="94" y="54" width="14" height="12"/></g>`+Array.from({length:18},(_,i)=>`<path d="M${(i*9+4)%160} ${(i*13)%70+6}l-3 9" stroke="${C.pale}" stroke-width="1.2" opacity=".7"/>`).join(''),
+'prairie-wind':()=>sk(C.sky)+`<g fill="#fff"><ellipse cx="36" cy="22" rx="20" ry="6"/><ellipse cx="116" cy="30" rx="24" ry="7"/></g>`+hill(C.wheat,58,10)+hill('#c9a24f',72,8)+Array.from({length:14},(_,i)=>`<path d="M${8+i*11} 100C${8+i*11} 84 ${14+i*11} 74 ${24+i*11} 70" stroke="${i%3?C.dgrn:C.rust}" stroke-width="2.2" fill="none" stroke-linecap="round"/>`).join('')+`<path d="M14 40h40M70 50h50" stroke="#fff" stroke-width="2" stroke-linecap="round"/>`,
+'bison-trail':()=>sk('#f4c07a')+sun(112,46,18,C.or)+hill(C.rose,62,8)+hill(C.rust,76,6)+`<path d="M10 98q40-10 80-4" stroke="${C.wheat}" stroke-width="3" stroke-dasharray="5 5" fill="none"/><g transform="translate(26 42) scale(.64)" fill="${C.navy}">${BISON}</g>`,
+'river-bridge':()=>sk(C.sky)+hill(C.grn,50,8)+hill(C.dgrn,60,6)+`<rect y="70" width="160" height="30" fill="${C.blue}"/><path d="M10 80h30M60 88h40M110 78h36M30 94h30M100 96h40" stroke="${C.sky}" stroke-width="1.5" opacity=".7"/><path d="M8 58h144" stroke="${C.navy}" stroke-width="4"/><path d="M14 58q22-26 44 0M58 58q22-26 44 0M102 58q22-26 44 0" fill="none" stroke="${C.or}" stroke-width="3.5"/><path d="M14 58v14M58 58v14M102 58v14M146 58v14" stroke="${C.navy}" stroke-width="3"/>`,
+'garden-team':()=>sk(C.pale)+sun(130,22,10)+hill(C.grn,52,8)+`<rect y="64" width="160" height="36" fill="${C.rust}"/><rect x="30" y="46" width="2.5" height="22" fill="${C.rust}"/><rect x="20" y="38" width="26" height="12" rx="1" fill="${C.cream}" stroke="${C.rust}"/>`+[0,1,2].map(r=>Array.from({length:7},(_,i)=>`<g transform="translate(${14+i*22+(r%2)*8} ${74+r*9})"><path d="M0 6V-2" stroke="${C.dgrn}" stroke-width="2"/><circle cx="-3" cy="-3" r="3.5" fill="${C.grn}"/><circle cx="3" cy="-4" r="3.5" fill="${C.grn}"/>${(i+r)%3==0?`<circle cy="-8" r="2.6" fill="${C.or}"/>`:''}</g>`).join('')).join(''),
+'badlands-night':()=>sk(C.navy)+[[20,16],[48,32],[84,12],[118,26],[142,14],[100,42],[30,48]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="1.4" fill="${C.gold}"/>`).join('')+`<circle cx="128" cy="30" r="9" fill="${C.cream}"/><clipPath id="bn"><path d="M0 100V68l14-6 10 10 14-18h14l10 22 20-10 12 12 18-8 14 6 14-4v28z"/></clipPath><g clip-path="url(#bn)"><rect y="40" width="160" height="60" fill="${C.rose}"/><rect y="64" width="160" height="7" fill="${C.gold}"/><rect y="78" width="160" height="7" fill="${C.wheat}"/><rect y="90" width="160" height="10" fill="${C.rust}"/></g>`,
+'little-library':()=>sk(C.sky)+sun(26,24,9)+hill(C.grn,66,8)+hill(C.dgrn,80,6)+`<rect x="76" y="56" width="5" height="34" fill="${C.rust}"/><rect x="52" y="30" width="54" height="34" fill="${C.cream}" stroke="${C.rust}" stroke-width="2"/><path d="M48 30L79 14l31 16z" fill="${C.or}"/><rect x="58" y="36" width="42" height="22" fill="${C.blue}"/><rect x="61" y="42" width="5" height="16" fill="${C.or}"/><rect x="67" y="44" width="4" height="14" fill="${C.gold}"/><rect x="72" y="41" width="6" height="17" fill="${C.sky}"/><rect x="79" y="43" width="5" height="15" fill="${C.cream}"/><rect x="85" y="42" width="6" height="16" fill="${C.rose}"/>`,
+'winter-team':()=>sk('#b9d3e0')+sun(130,30,9)+hill('#fff',62,8)+hill('#e3edf3',78,6)+pine(20,60)+pine(140,58,.9)+`<g stroke="#b9cdd8" stroke-width="1.2" fill="#fff"><circle cx="70" cy="78" r="13"/><circle cx="70" cy="56" r="9.5"/><circle cx="70" cy="40" r="6.5"/></g><path d="M60 47h20l-3 5H63z" fill="${C.or}"/><rect x="64" y="30" width="12" height="6" fill="${C.navy}"/><path d="M71 40l8 1-8 1z" fill="${C.or}"/>`,
+wetlands:()=>sk('#f6d9a0')+sun(110,36,14,C.or)+hill(C.grn,56,6)+`<rect y="62" width="160" height="38" fill="${C.blue}"/><path d="M12 72h36M70 80h44M120 70h30M30 90h40M98 94h46" stroke="${C.sky}" stroke-width="1.5" opacity=".75"/><path d="M50 24q4-4 8 0q4-4 8 0" stroke="${C.navy}" fill="none" stroke-width="1.5"/>`+[[20,56],[28,60],[130,54],[140,58]].map(([x,y])=>`<path d="M${x} 94V${y}" stroke="${C.navy}" stroke-width="2"/><rect x="${x-2}" y="${y-8}" width="4" height="11" rx="2" fill="${C.rust}"/>`).join('')
+};
+const artFor=s=>'<svg class="art" viewBox="0 0 160 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'+(ART[s.id]||ART['prairie-wind'])()+'<rect width="160" height="100" filter="url(#grain)" opacity=".16"/></svg>';
+const SCENES=[
+`<rect x="20" y="20" width="190" height="210" fill="${C.sky}"/><circle cx="165" cy="76" r="14" fill="${C.gold}"/><clipPath id="bt"><path d="M20 230V160l26-8 16-38h24l14 32 30-8 22-26 22 10v108z"/></clipPath><g clip-path="url(#bt)"><rect x="20" y="100" width="190" height="130" fill="${C.rose}"/><rect x="20" y="132" width="190" height="12" fill="${C.gold}"/><rect x="20" y="156" width="190" height="12" fill="${C.wheat}"/><rect x="20" y="180" width="190" height="14" fill="${C.rust}"/><rect x="20" y="206" width="190" height="12" fill="${C.or}"/></g>`,
+`<rect x="20" y="20" width="190" height="210" fill="#f4c07a"/><circle cx="158" cy="110" r="26" fill="${C.or}"/><rect x="20" y="170" width="190" height="16" fill="${C.rose}"/><rect x="20" y="186" width="190" height="50" fill="${C.rust}"/><g transform="translate(38 112)" fill="${C.navy}">${BISON}</g>`,
+`<rect x="20" y="20" width="190" height="210" fill="${C.navy}"/><g fill="${C.gold}"><circle cx="64" cy="64" r="2"/><circle cx="100" cy="90" r="1.6"/><circle cx="140" cy="58" r="2.2"/><circle cx="176" cy="96" r="1.6"/><circle cx="120" cy="124" r="1.4"/><circle cx="52" cy="118" r="1.4"/></g><circle cx="168" cy="70" r="12" fill="${C.cream}"/><clipPath id="bn2"><path d="M20 230V176l22-10 16 14 20-26h22l14 30 26-14 20 18 30-8v50z"/></clipPath><g clip-path="url(#bn2)"><rect x="20" y="120" width="190" height="110" fill="${C.rose}"/><rect x="20" y="168" width="190" height="10" fill="${C.gold}"/><rect x="20" y="192" width="190" height="12" fill="${C.rust}"/></g>`
+];
+const BOOK=n=>'<button class="book" data-action="turn-page" aria-label="Turn the page"><svg viewBox="0 0 400 252" role="img" aria-label="An open book showing a Badlands scene"><ellipse cx="200" cy="242" rx="150" ry="7" fill="#000" opacity=".25"/><path d="M200 48C150 28 88 28 22 50V226C88 206 150 208 200 228C250 208 312 206 378 226V50C312 28 250 28 200 48Z" fill="'+C.navy+'"/><path d="M200 40C150 24 90 24 30 44V214C90 196 150 196 200 216Z" fill="#fff"/><path d="M200 40C250 24 310 24 370 44V214C310 196 250 196 200 216Z" fill="'+C.cream+'"/><clipPath id="lp"><path d="M200 40C150 24 90 24 30 44V214C90 196 150 196 200 216Z"/></clipPath><g class="book-scene" clip-path="url(#lp)">'+SCENES[n]+'</g><g fill="#d9d2c0"><rect x="226" y="70" width="124" height="6" rx="3"/><rect x="226" y="88" width="136" height="6" rx="3"/><rect x="226" y="106" width="110" height="6" rx="3"/><rect x="226" y="142" width="130" height="6" rx="3"/><rect x="226" y="160" width="100" height="6" rx="3"/><rect x="226" y="178" width="120" height="6" rx="3"/></g><rect x="226" y="124" width="84" height="6" rx="3" fill="'+C.gold+'"/><rect x="226" y="124" width="26" height="6" rx="3" fill="'+C.or+'"/></svg></button>';
+const HEROBG='<svg class="hero-bg" viewBox="0 0 800 400" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><circle cx="400" cy="300" r="150" fill="'+C.gold+'"/><path d="M0 300Q200 250 400 290T800 280V400H0Z" fill="'+C.rose+'"/><path d="M0 340Q220 300 420 335T800 325V400H0Z" fill="'+C.rust+'"/><path d="M0 378Q250 352 500 374T800 366V400H0Z" fill="'+C.navy+'"/></svg>';
+function route(){clearSpeed();stopSpeech();const parts=decodeURIComponent((location.hash||'#home').replace(/^#/, '')).split('/');const page=parts[0]||'home', id=parts[1]||'';const key=page+'/'+id;
+  if(page==='read' && (!ui.reader||ui.reader.id!==id||ui.reader.entry!==(parts[2]||''))) ui.reader={id,started:Date.now(),done:false,entry:parts[2]||'',chunk:1,mode:parts[2]==='speed'?'speed':'normal',focus:0,wpm:180,speedIndex:0,font:profile.prefs.font};
+  if(page==='quiz'&&(!ui.quiz||ui.quiz.id!==id||ui.route!==key))ui.quiz={id,index:0,answers:[],complete:false};
+  if(page==='sound'&&(!ui.sound||ui.sound.id!==id||ui.route!==key))ui.sound={id,selected:null,complete:false};
+  if(page==='recall'&&(!ui.recall||ui.route!==key)){ui.recall=makeRecall();ui.order=makeOrder()}
+  ui.route=key;
+  const labels={home:'Train',recall:'Memory',library:'Library',phonics:'Sound lab',progress:'Progress',educators:'Educator tools',mission:'About',read:'Reading',quiz:'Comprehension quiz',sound:'Sound practice',result:'Results'};
+  document.querySelectorAll('.nav-link').forEach(a=>a.classList.toggle('active',a.dataset.page===(['read','quiz','result'].includes(page)?'library':page==='sound'?'phonics':page)));
+  $('#avatar-initial').textContent=(profile.name.trim()[0]||'R').toUpperCase();
+  const target=$('#content');
+  if(page==='home')target.innerHTML=renderHome();
+  else if(page==='library')target.innerHTML=renderLibrary();
+  else if(page==='phonics')target.innerHTML=renderPhonics();
+  else if(page==='recall')target.innerHTML=id==='order'?renderOrder():renderRecall();
+  else if(page==='progress')target.innerHTML=renderProgress();
+  else if(page==='educators')target.innerHTML=renderEducators();
+  else if(page==='mission')target.innerHTML=renderMission();
+  else if(page==='read'&&storyById(id))target.innerHTML=renderReader(storyById(id));
+  else if(page==='quiz'&&storyById(id))target.innerHTML=renderQuiz(storyById(id));
+  else if(page==='sound'&&lessonById(id))target.innerHTML=renderSound(lessonById(id));
+  else{nav('home');return}
+  window.scrollTo({top:0,behavior:'instant'});
+}
+function metrics(){const p=paceWpm(),q=accuracy(),r=recallAcc(),st=streak();return `<div class="metric-grid">
+ ${metric('Reading pace',p===null?'—':p+' WPM','Average across stories read')}
+ ${metric('Comprehension',q===null?'—':q+'%','Quiz accuracy')}
+ ${metric('Recall',r===null?'—':r+'%','Vocabulary drill accuracy')}
+ ${metric('Streak',st+' day'+(st===1?'':'s'),'Consecutive days practiced')}
+</div>`}
+function metric(t,v,foot){return `<div class="metric-card"><div class="metric-caption">${t}</div><div class="metric-value">${v}</div><div class="metric-foot">${foot}</div></div>`}
+function storyCard(s){const done=profile.reads.some(r=>r.id===s.id);const id=encodeURIComponent(s.id);return `<article class="story-row"><div class="sr-art">${artFor(s)}</div><div class="sr-main"><h3>${esc(s.title)}</h3><p>${esc(s.teaser)}</p></div><div class="sr-meta"><span>${esc(s.place)}</span><span>Level ${s.level} · ${esc(s.category)}</span></div><div class="sr-meta"><span>${esc(s.time)} min · ${countWords(s.paragraphs)} words</span>${done?'<span class="sr-done">Completed</span>':''}</div><div class="story-actions"><a class="btn btn-outline btn-sm" href="#read/${id}/speed">Speed</a><a class="btn btn-primary btn-sm" href="#read/${id}">${done?'Reread':'Read'}</a></div></article>`}
+function renderHome(){return `<section class="centered-home" aria-label="RushRead homepage"><div class="centered-home-book">${BOOK(ui.scene)}</div><h1>Make reading your thing.</h1><p>Choose how you want to practice today.</p><div class="centered-home-actions"><a class="btn btn-primary" href="#library">Choose a story</a><a class="btn btn-outline" href="#read/${encodeURIComponent((allStories().find(s=>!profile.reads.some(r=>r.id===s.id))||allStories()[0]).id)}/speed">Speed reading</a><a class="btn btn-outline" href="#recall">Memory practice</a><a class="btn btn-outline" href="#phonics">Sound lab</a><a class="btn btn-outline" href="#progress">AI coach</a></div>
+<p class="small-note" style="margin-top:18px;max-width:36ch"></p></section>`}
+function memHead(t){return `<h1 class="page-title">Memory</h1><p class="page-subtitle" style="text-align:center">Practice vocabulary and story sequencing. <a class="text-link" href="#progress">View progress</a></p><div class="tabs"><a class="pill ${t==='words'?'active':''}" href="#recall">Vocabulary</a><a class="pill ${t==='order'?'active':''}" href="#recall/order">Story order</a></div>`}
+function makeOrder(){const read=new Set(profile.reads.map(r=>r.id));const pool=allStories().filter(x=>sentences(x).length>=4);const mine=pool.filter(x=>read.has(x.id));const st=shuffle(mine.length?mine:pool)[0];const sents=sentences(st).slice(0,5).map(x=>x.trim());return {id:st.id,sents,order:shuffle(sents.map((_,i)=>i)),picked:[],checked:false}}
+function renderOrder(){const o=ui.order,st=storyById(o.id),n=o.sents.length,left=o.order.filter(i=>!o.picked.includes(i));
+if(o.checked){const right=o.picked.filter((p,k)=>p===k).length;return `${memHead('order')}<section class="quiz-card"><h2>${right} of ${n} in the right place</h2><ol class="order-picked">${o.picked.map((p,k)=>`<li class="${p===k?'ok':'bad'}">${esc(o.sents[p])}</li>`).join('')}</ol><div class="tip-box"><strong>Correct order</strong><ol class="order-picked">${o.sents.map(x=>`<li>${esc(x)}</li>`).join('')}</ol></div><div class="results-actions"><button class="btn btn-primary" data-action="order-new">New story</button></div></section>`}
+return `${memHead('order')}<p class="page-subtitle">Tap the sentences in the order they happen in “${esc(st.title)}”.</p><section class="quiz-card">${o.picked.length?`<ol class="order-picked">${o.picked.map(p=>`<li>${esc(o.sents[p])}</li>`).join('')}</ol>`:'<p class="small-note">Your order appears here.</p>'}<div class="options">${left.map(i=>`<button class="answer-option" data-action="order-pick" data-i="${i}"><span>${esc(o.sents[i])}</span></button>`).join('')}</div><div class="results-actions" style="justify-content:flex-start"><button class="btn btn-outline" data-action="order-undo" ${o.picked.length?'':'disabled'}>Undo</button>${left.length?'':'<button class="btn btn-primary" data-action="order-check">Check order</button>'}</div></section>`}
+function makeRecall(){const seen=new Set(profile.reads.map(r=>r.id));const missed=new Set(profile.recallMissed||[]);const items=[];for(const st of allStories())for(const [w,d] of Object.entries(st.vocab||{}))items.push({w,d,pri:(missed.has(w)?2:0)+(seen.has(st.id)?1:0)});const pool=items.map(x=>x.w);const deck=shuffle(items).sort((x,y)=>y.pri-x.pri).slice(0,8);return {i:0,picks:[],done:false,deck:deck.map(x=>({...x,choices:shuffle([x.w,...shuffle(pool.filter(w=>w!==x.w)).slice(0,3)])}))}}
+function renderRecall(){const r=ui.recall;if(!r.deck.length)return `${memHead("words")}<div class="empty-state">No vocabulary yet. Read a story first.</div>`;
+if(r.done){const right=r.picks.filter((p,i)=>p===r.deck[i].w).length;return `<h1 class="page-title">Recall results</h1><div class="panel center"><div class="result-circle">${Math.round(right/r.deck.length*100)}%</div><h2>${right} of ${r.deck.length} correct</h2><p>${right===r.deck.length?'No misses this round.':'Missed words are weighted higher in your next round.'}</p><div class="log-list" style="text-align:left">${r.deck.map((c,i)=>`<div class="log-row"><div><strong>${esc(c.w)}</strong><br><small>${esc(c.d)}</small></div><span class="score">${r.picks[i]===c.w?'Correct':'Missed'}</span></div>`).join('')}</div><div class="results-actions"><button class="btn btn-primary" data-action="new-recall">New round</button><a class="btn btn-outline" href="#library">Back to library</a></div></div>`}
+const c=r.deck[r.i],sel=r.picks[r.i];return `${memHead("words")}<p class="page-subtitle">Choose the word that matches the definition.</p><div class="quiz-top"><span>Word ${r.i+1} of ${r.deck.length}</span></div><div class="progress-track"><div class="progress-fill" style="width:${r.i/r.deck.length*100}%"></div></div><section class="quiz-card"><h2>${esc(c.d)}</h2><div class="options">${c.choices.map((w,i)=>`<button class="answer-option ${sel!==undefined?(w===c.w?'correct':w===sel?'wrong':''):''}" data-action="answer-recall" data-word="${esc(w)}" ${sel!==undefined?'disabled':''}><span class="choice-letter">${String.fromCharCode(65+i)}</span><span>${esc(w)}</span></button>`).join('')}</div>${sel!==undefined?`<button class="btn btn-primary" data-action="next-recall">${r.i===r.deck.length-1?'See results':'Next word'}</button>`:''}</section>`}
+function answerRecall(w){const r=ui.recall;if(r.picks[r.i]!==undefined)return;r.picks[r.i]=w;$('#content').innerHTML=renderRecall()}
+function nextRecall(){const r=ui.recall;if(r.picks[r.i]===undefined)return;if(r.i<r.deck.length-1){r.i++}else{r.done=true;const right=r.picks.filter((p,i)=>p===r.deck[i].w).length;const m=new Set(profile.recallMissed||[]);r.deck.forEach((c,i)=>r.picks[i]===c.w?m.delete(c.w):m.add(c.w));profile.recallMissed=[...m];profile.recall.push({at:Date.now(),correct:right,total:r.deck.length});save()}$('#content').innerHTML=renderRecall()}
+function filteredStories(){return allStories().filter(s=>(ui.level==='all'||String(s.level)===ui.level)&&[s.title,s.teaser,s.category,s.place].join(' ').toLowerCase().includes(ui.search.toLowerCase()))}
+function renderLibrary(){const list=filteredStories();return `<h1 class="page-title">Library</h1><p class="page-subtitle">Each passage has vocabulary help, read-aloud, and a quiz. Pick a level, then read normally or in speed mode.</p><div class="control-row"><label class="visually-hidden" for="story-search">Search stories</label><input id="story-search" class="searchbox" placeholder="Search stories or topics..." value="${esc(ui.search)}" autocomplete="off"><div class="filter-pills">${[['all','All levels'],['1','Level 1'],['2','Level 2'],['3','Level 3']].map(([v,t])=>`<button class="pill ${ui.level===v?'active':''}" data-action="filter-level" data-value="${v}" aria-pressed="${ui.level===v}">${t}</button>`).join('')}</div></div><div id="story-results">${storyResults(list)}</div><p class="small-note" style="margin-top:18px">Levels are informal practice groupings, not certified grade placement or diagnostic assessments. Read at your own pace.</p>`}
+function storyResults(list){return `<div class="small-note" style="margin-bottom:14px">Showing ${list.length} of ${allStories().length} stories</div>${list.length?`<div class="story-grid">${list.map(storyCard).join('')}</div>`:`<div class="empty-state"><h3>No stories found</h3><p>Try another topic or reading level.</p></div>`}`}
+function sentences(s){return s.paragraphs.flatMap(p=>p.match(/[^.!?]+[.!?]+|[^.!?]+$/g)||[])}
+function inlineVocab(segment,s){const words=Object.keys(s.vocab||{});if(!words.length)return esc(segment);const re=new RegExp('\\b('+words.sort((a,b)=>b.length-a.length).map(w=>w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')\\b','gi');return segment.split(re).map(part=>words.some(w=>w.toLowerCase()===part.toLowerCase())?`<button type="button" class="vocab-word" data-action="vocab" data-word="${esc(part.toLowerCase())}" aria-label="Define ${esc(part)}">${esc(part)}</button>`:esc(part)).join('')}
+function renderStoryText(s){let idx=0;return s.paragraphs.map(p=>`<p>${(p.match(/[^.!?]+[.!?]+|[^.!?]+$/g)||[]).map(seg=>{const active=idx++===ui.reader.focus;return `<span class="${ui.reader.mode==='spotlight'?(active?'sentence-focus':'sentence-muted'):''}">${inlineVocab(seg,s)}</span>`}).join('')}</p>`).join('')}
+// Hand-drawn, openly licensed OpenMoji illustrations (not AI-generated).
+const STORY_ILLUSTRATIONS={'pip-map':'1F415','red-mitten':'1F9E4','seed':'1F33B','library-rain':'1F438','prairie-wind':'1F33E','bison-trail':'1F9AC','river-bridge':'1F309','garden-team':'1F33B','badlands-night':'1F303','little-library':'1F4DA','winter-team':'2744','wetlands':'1F986'};
+function storyIllustration(story){const code=STORY_ILLUSTRATIONS[story.id]||'1F4D6';return 'https://cdn.jsdelivr.net/npm/openmoji@15.1.0/color/svg/'+code+'.svg'}
+function renderReader(s){const r=ui.reader;const full=textOnly(s);const wordList=units(s,r.chunk);const focusCount=sentences(s).length;const textClasses=['reader-text',r.font==='large'?'large':'',r.font==='xlarge'?'xlarge':'',profile.prefs.spacing?'spacious':'',profile.prefs.contrast?'highcontrast':''].join(' ');return `<div class="reader-crumb"><a href="#library">Back to library</a> <span style="margin:0 6px">/</span> ${esc(s.title)}</div><div class="reader-header"><div><h1>${esc(s.title)}</h1><p>${esc(levelTag(s.level))} · ${esc(s.place)}</p></div><span class="tag">${countWords(s.paragraphs)} words · about ${s.time} min</span></div><div class="reader-layout"><aside class="reader-illustration-side"><div class="story-illustration"><img src="${storyIllustration(s)}" alt="Illustration related to ${esc(s.title)}" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('illustration-unavailable')"><span class="illustration-credit">Illustration: OpenMoji</span></div></aside><section class="reader-sheet"><div class="reader-toolbar"><div class="toolbar-group" role="group" aria-label="Reading mode"><button class="${r.mode==='normal'?'active':''}" data-action="read-mode" data-value="normal" title="Read the whole story at your own pace" aria-pressed="${r.mode==='normal'}">Read</button><button class="${r.mode==='spotlight'?'active':''}" data-action="read-mode" data-value="spotlight" title="Show one sentence at a time" aria-pressed="${r.mode==='spotlight'}">Focus</button><button class="${r.mode==='speed'?'active':''}" data-action="read-mode" data-value="speed" title="Practice reading at your chosen speed" aria-pressed="${r.mode==='speed'}">Speed</button></div><div class="toolbar-group"><button data-action="font" data-value="minus" title="Smaller text" aria-label="Smaller text">A−</button><button data-action="font" data-value="plus" title="Larger text" aria-label="Larger text">A+</button><button data-action="read-aloud" title="Hear the whole story">Listen</button></div></div>${r.mode==='speed'?`<div class="speed-stage"><div id="speed-word" class="speed-word">${esc(wordList[r.speedIndex]||'Done!')}</div></div><div class="speed-controls"><button class="btn btn-ghost" data-action="speed-back">Back</button><button class="btn btn-primary" data-action="speed-toggle" id="speed-toggle">Start</button><button class="btn btn-ghost" data-action="speed-next">Next</button><div class="toolbar-group" role="group" aria-label="Words at a time">${[1,2,3].map(n=>`<button class="${r.chunk===n?'active':''}" data-action="chunk" data-value="${n}">${n} word${n>1?'s':''}</button>`).join('')}</div><label for="speed-range">Pace <strong id="wpm-label">${r.wpm}</strong> WPM</label><input type="range" id="speed-range" min="80" max="300" step="10" value="${r.wpm}"></div><p class="small-note center">Space starts or pauses. Arrow keys step. Raise the pace only while you can still answer the quiz.</p>`:`<article class="${textClasses}" id="story-text">${renderStoryText(s)}</article>`}${r.mode==='spotlight'?`<div class="reader-controls"><button class="btn btn-outline btn-sm" data-action="focus-prev" ${r.focus===0?'disabled':''}>Previous sentence</button><span class="small-note">Sentence ${r.focus+1} of ${focusCount}</span><button class="btn btn-outline btn-sm" data-action="focus-next" ${r.focus===focusCount-1?'disabled':''}>Next sentence</button></div>`:''}<div id="glossary" class="glossary-box" aria-live="polite"><strong>Vocabulary</strong><div>Tap an underlined word to see its definition.</div></div><div class="divider"></div><div class="reader-controls"><span class="small-note">Finished? The quiz follows.</span><button class="btn btn-primary" data-action="finish-read" data-id="${esc(s.id)}">Finish and take quiz</button></div></section><aside class="reader-side"><div class="reader-help"><span class="reader-help-title">Reading tools</span><p>Hover over a tool to learn what it does.</p><div class="help-chips"><span class="help-chip" tabindex="0" data-help="Read the full story at your own pace.">Read <span class="help-mark">?</span></span><span class="help-chip" tabindex="0" data-help="Focus on one sentence at a time.">Focus <span class="help-mark">?</span></span><span class="help-chip" tabindex="0" data-help="Practice reading at an adjustable pace.">Speed <span class="help-mark">?</span></span><span class="help-chip" tabindex="0" data-help="Listen to the story read aloud.">Listen <span class="help-mark">?</span></span></div></div></aside></div>`}
+function renderQuiz(s){const q=ui.quiz;if(q.complete)return renderResult(s,q.answers);const current=s.questions[q.index];const selected=q.answers[q.index];return `<div class="quiz-shell"><div class="reader-crumb"><a href="#read/${encodeURIComponent(s.id)}">Reread story</a></div><h1 class="page-title">Comprehension check</h1><p class="page-subtitle">Choose the best answer. Use evidence from the passage.</p><div class="quiz-top" style="margin-top:28px"><span>Question ${q.index+1} of ${s.questions.length}</span><span>${esc(current.skill)}</span></div><div class="progress-track" style="margin-top:9px"><div class="progress-fill" style="width:${q.index/s.questions.length*100}%"></div></div><section class="quiz-card"><span class="tag mint">${esc(current.skill)}</span><h2>${esc(current.q)}</h2><div class="options">${current.choices.map((choice,i)=>`<button class="answer-option ${selected!==undefined?(i===current.answer?'correct':i===selected?'wrong':''):''}" data-action="answer-quiz" data-index="${i}" ${selected!==undefined?'disabled':''}><span class="choice-letter">${String.fromCharCode(65+i)}</span><span>${esc(choice)}</span></button>`).join('')}</div>${selected!==undefined?`<div class="quiz-feedback ${selected===current.answer?'':'bad'}" role="status"><strong>${selected===current.answer?'Correct. ':'Not quite. '}</strong>${esc(current.why)}<br><button class="btn btn-primary btn-sm" data-action="next-quiz">${q.index===s.questions.length-1?'See my results':'Next question'}</button></div>`:''}</section></div>`}
+function suggestedStory(s,score){const limit=score>=.67?Math.min(3,s.level+1):Math.max(1,s.level-1);return allStories().find(x=>x.level===limit&&x.id!==s.id&&!profile.reads.some(r=>r.id===x.id))||allStories().find(x=>x.id!==s.id&&x.level===s.level)||s}
+function renderResult(s,answers){const right=answers.filter((a,i)=>a===s.questions[i].answer).length;const pct=Math.round(right/s.questions.length*100);const rec=suggestedStory(s,pct/100);return `<div class="quiz-shell center"><h1 class="page-title">Quiz results</h1><div class="panel" style="margin-top:25px"><div class="result-circle">${pct}%</div><h2 style="margin:0 0 7px">${right} out of ${s.questions.length} correct</h2><p>${pct===100?'Full marks.':pct>=67?'Review the explanations below.':'Reread the passage and check the evidence.'}</p><div class="results-actions"><a class="btn btn-outline" href="#read/${encodeURIComponent(s.id)}">Reread story</a><a class="btn btn-primary" href="#read/${encodeURIComponent(rec.id)}">Next: ${esc(rec.title)}</a></div><div class="divider"></div><h3>Answer review</h3><div style="text-align:left">${s.questions.map((q,i)=>`<div class="log-row" style="align-items:start"><div><strong>${i+1}. ${esc(q.q)}</strong><br><small>${esc(q.why)}</small></div><span class="score">${answers[i]===q.answer?'✓ Correct':'↻ Review'}</span></div>`).join('')}</div></div><p class="small-note">Your results are saved on this device only.</p></div>`}
+function renderPhonics(){const passed=new Set(profile.phonics.filter(x=>x.correct).map(x=>x.id));return `<div class="sound-workspace"><h1 class="page-title">Sound lab</h1><p class="page-subtitle">Choose a sound pattern and practice blending words.</p><div class="learning-progress-summary"><strong>${passed.size} of ${PHONICS.length}</strong> patterns answered correctly · <a href="#progress" class="text-link">View progress</a></div><div class="sound-lesson-grid">${PHONICS.map(l=>`<article class="phonics-card"><h3>${esc(l.title)} ${passed.has(l.id)?'<span title="Answered correctly">✓</span>':''}</h3><p>${esc(l.subtitle)}</p><a class="btn btn-outline btn-sm" href="#sound/${l.id}">${passed.has(l.id)?'Practice again':'Start lesson'}</a></article>`).join('')}</div></div>`}
+
+function renderSound(l){const selected=ui.sound.selected;return `<div class="phonics-practice"><div class="reader-crumb" style="text-align:left"><a href="#phonics">All sound lessons</a></div><h1 class="page-title">${esc(l.title)}</h1><p class="page-subtitle">${esc(l.subtitle)}. Read the chunks left to right, then blend them.</p><div class="panel" style="margin-top:24px"><h3>Sounds</h3><div class="sound-chunks">${l.chunks.map(x=>`<span class="chunk">${esc(x)}</span>`).join('')}</div><div class="word-result">${esc(l.join)}</div><button class="btn btn-outline btn-sm" data-action="speak-word" data-word="${esc(l.join)}">Hear the word</button><div class="phonics-words">${l.practice.map(w=>`<span class="sound-word">${esc(w)}</span>`).join('')}</div><div class="sound-question"><h2 style="font-size:19px">${esc(l.prompt)}</h2><div class="options">${l.choices.map((choice,i)=>`<button data-action="answer-sound" data-index="${i}" class="answer-option ${selected!==null?(i===l.answer?'correct':i===selected?'wrong':''):''}" ${selected!==null?'disabled':''}><span class="choice-letter">${String.fromCharCode(65+i)}</span>${esc(choice)}</button>`).join('')}</div>${selected!==null?`<div class="quiz-feedback ${selected===l.answer?'':'bad'}" role="status"><strong>${selected===l.answer?'Correct. ':'Not quite. '}</strong>${esc(l.reason)}<div style="margin-top:12px"><a class="btn btn-primary btn-sm" href="#phonics">Next lesson</a> <button class="btn btn-outline btn-sm" data-action="retry-sound">Try again</button></div></div>`:''}</div></div></div>`}
+
+function aiSeed(){const n=profile.reads.length+profile.quizzes.length+profile.phonics.length+profile.recall.length+(profile.savedWords||[]).length;return (n*17+String(profile.name||'').length*3)%97}
+function generateAiInsights(forceFresh){
+  const seed=aiSeed()+(forceFresh?Date.now()%7:0);
+  const q=accuracy(), r=recallAcc(), p=paceWpm();
+  const phonicsDone=profile.phonics.length;
+  const phonCorrect=profile.phonics.filter(x=>x.correct).length;
+  const phonRate=phonicsDone?Math.round(phonCorrect/phonicsDone*100):null;
+  const reads=profile.reads.length, quizzes=profile.quizzes.length;
+  const skills=[
+    {name:'Inference & reading between the lines',tip:'Pause after each paragraph and ask “What is the character thinking?” before moving on.',cta:'#library',ctaLabel:'Try a Level 2 story'},
+    {name:'Finding text evidence',tip:'When you answer a quiz, point to the exact sentence that supports your choice.',cta:'#library',ctaLabel:'Reread with Focus mode'},
+    {name:'Cause-and-effect reasoning',tip:'Look for signal words like because, so, and as a result while you read.',cta:'#library',ctaLabel:'Practice with a STEM story'},
+    {name:'Story sequence & order',tip:'After reading, retell the beginning, middle, and end out loud before the quiz.',cta:'#recall/order',ctaLabel:'Try Story order drill'},
+    {name:'Vocabulary in context',tip:'Tap underlined words, then use each new word in a sentence of your own.',cta:'#recall',ctaLabel:'Run a vocabulary round'},
+    {name:'Main idea identification',tip:'After each page, summarize the big idea in one short sentence.',cta:'#library',ctaLabel:'Choose a Level 3 passage'},
+    {name:'Phonemic awareness & blending',tip:'Slowly stretch each sound in the Sound lab before saying the whole word.',cta:'#phonics',ctaLabel:'Open Sound lab'}
+  ];
+  const strengths=['remembering key details','steady daily practice','curiosity about new words','careful listening during read-aloud','finishing stories you start'];
+  const weak=skills[seed%skills.length];
+  const strong=strengths[(seed*3)%strengths.length];
+  let headline, summary, confidence;
+  if(reads<1 && quizzes<1 && phonicsDone<1){
+    headline='Waiting for your first signal';
+    summary='The coach maps patterns from quizzes, sound lessons, and recall drills. Finish one story with a comprehension check to unlock a personalized weakness scan.';
+    confidence='Calibrating';
+  }else if(quizzes<2 && reads<3){
+    headline='Early pattern detected';
+    summary='From your first sessions the model is watching how you handle detail questions versus deeper thinking. A provisional focus area is emerging around '+weak.name.toLowerCase()+'. More activity will refine this.';
+    confidence='Low confidence · early data';
+  }else{
+    const rateBits=[];
+    if(q!==null) rateBits.push(q+'% quiz accuracy');
+    if(r!==null) rateBits.push(r+'% recall');
+    if(phonRate!==null) rateBits.push(phonRate+'% sound patterns');
+    if(p!==null) rateBits.push('~'+p+' WPM pace');
+    const stats=rateBits.length?' Signals in the data: '+rateBits.join(', ')+'.':'';
+    if(q!==null && q<65){
+      headline='Comprehension is the clearest growth zone';
+      summary='Across '+quizzes+' quizzes the model sees uneven performance. The strongest signal points to '+weak.name.toLowerCase()+' as the skill most worth deliberate practice right now. You already show relative strength in '+strong+'.'+stats;
+    }else if(r!==null && r<70){
+      headline='Vocabulary recall needs tighter loops';
+      summary='Recall drills lag behind your reading volume. The AI flags '+weak.name.toLowerCase()+'—especially word meaning under time pressure—as the priority. Keep using the glossary while you read; missed words are already weighted higher in future rounds.'+stats;
+    }else if(phonRate!==null && phonRate<75){
+      headline='Sound patterns still have gaps';
+      summary='Sound-lab accuracy sits below the comfort band. Focusing on '+weak.name.toLowerCase()+' should lift both decoding and fluency. Your reading volume ('+reads+' sessions) is a solid foundation to build on.'+stats;
+    }else{
+      headline='Balanced profile with one sharp focus';
+      summary='Overall signals look healthy. The residual opportunity the model keeps ranking highest is '+weak.name.toLowerCase()+'. You tend to do well with '+strong+', so lean on that confidence while you target the weaker skill.'+stats;
+    }
+    confidence=quizzes>=5?'High confidence · multi-session model':'Moderate confidence';
+  }
+  return {headline, summary, weak, strong, confidence, seed};
+}
+function renderAiCoach(forceFresh){
+  const ins=generateAiInsights(!!forceFresh);
+  const hasData=profile.reads.length+profile.quizzes.length+profile.phonics.length+profile.recall.length>0;
+  return `<section class="ai-coach" id="ai-coach" aria-label="AI Reading Coach insights">
+  <div class="ai-coach-header">
+    <span class="ai-coach-badge"><span class="ai-dot" aria-hidden="true"></span> AI Coach</span>
+    <h3>Reading weakness scan</h3>
+    <span class="ai-coach-meta">${esc(ins.confidence)}</span>
+  </div>
+  <div class="ai-coach-loading"><span class="ai-spinner" aria-hidden="true"></span> Analyzing your practice patterns…</div>
+  <div class="ai-coach-body">
+    <p><strong>${esc(ins.headline)}</strong></p>
+    <p>${esc(ins.summary)}</p>
+    ${hasData?`<div class="ai-coach-weakness"><span class="icon" aria-hidden="true">◎</span><div><strong>Primary focus · ${esc(ins.weak.name)}</strong><span>${esc(ins.weak.tip)}</span></div></div>`:''}
+    <div class="ai-coach-actions">
+      ${hasData?`<a class="btn btn-primary btn-sm" href="${esc(ins.weak.cta)}">${esc(ins.weak.ctaLabel)}</a>`:`<a class="btn btn-primary btn-sm" href="#library">Start with a story</a>`}
+      <button class="btn btn-outline btn-sm" data-action="refresh-ai">Re-analyze</button>
+      <span class="small-note"></span>
+    </div>
+  </div>
+</section>`;
+}
+function renderProgress(){const activity=[...profile.reads,...profile.quizzes,...profile.phonics,...profile.recall];const days=lastDays(7);const counts=days.map(d=>activity.filter(x=>localDay(x.at)===localDay(d)).length);const max=Math.max(1,...counts);const badges=[['First chapter','Complete your first story',profile.reads.length>=1,'▤'],['Curious mind','Finish three quizzes',profile.quizzes.length>=3,'✧'],['Sound explorer','Finish three sound patterns correctly',new Set(profile.phonics.filter(p=>p.correct).map(p=>p.id)).size>=3,'◈'],['Book wanderer','Read five different stories',new Set(profile.reads.map(r=>r.id)).size>=5,'✦'],['Steady reader','Practice on three separate days',recentDays().size>=3,'☼'],['Word collector','Save five vocabulary words',new Set(profile.savedWords).size>=5,'♢']];const logs=[...profile.quizzes.map(q=>({...q,kind:'Quiz',name:storyById(q.id)?.title||'Story',detail:`${q.correct}/${q.total} correct`})),...profile.recall.map(r=>({...r,kind:'Recall',name:'Vocabulary drill',detail:`${r.correct}/${r.total} correct`})),...profile.phonics.map(p=>({...p,kind:'Sound',name:lessonById(p.id)?.title||'Sound lesson',detail:p.correct?'Correct':'Practiced'})),...profile.reads.map(r=>({...r,kind:'Read',name:storyById(r.id)?.title||'Story',detail:'Completed'}))].sort((a,b)=>b.at-a.at).slice(0,12);return `<h1 class="page-title">Progress</h1><p class="page-subtitle">Pace, comprehension, recall, and AI weakness scan — all stored on this device only.</p>${renderAiCoach()}${metrics()}<div class="two-col" style="margin-top:21px"><section class="panel"><h3>Last 7 days</h3><p>Activities completed per day</p><div class="activity-chart" role="img" aria-label="Activity counts: ${counts.join(', ')}"><!-- bar heights are proportional to activity -->${days.map((d,i)=>`<div class="bar-group"><div class="bar" title="${counts[i]} activities" style="height:${counts[i]===0?4:Math.max(12,counts[i]/max*137)}px"></div><span>${d.toLocaleDateString(undefined,{weekday:'short'})}</span></div>`).join('')}</div><p style="margin-bottom:0">${readingMinutes()} min reading · ${wordsRead().toLocaleString()} words</p></section><section class="panel"><h3>History</h3><p>Stored only in this browser</p><div class="log-list">${logs.length?logs.map(x=>`<div class="log-row"><div><strong>${esc(x.name)}</strong><br><small>${esc(x.kind)} · ${prettyDate(x.at)}</small></div><span class="score">${esc(x.detail)}</span></div>`).join(''):'<div class="empty-state">Nothing yet. Finish a story or drill to start your log.</div>'}</div></section></div><div class="section-heading"><div><h2>Milestones</h2></div></div><div class="badge-list">${badges.map(([title,desc,yes,mark],i)=>`<div class="achievement ${yes?'earned':''}"><div class="badge-emblem" aria-hidden="true">${['★','◆','♫','✦','☀','✿'][i]}</div><strong>${esc(title)}</strong><p>${esc(desc)}</p><span class="badge-status">${yes?'Unlocked!':'Keep practicing to unlock'}</span></div>`).join('')}</div><div class="panel" style="margin-top:20px"><h3>Saved vocabulary</h3>${profile.savedWords.length?`<div class="phonics-words" style="justify-content:start">${[...new Set(profile.savedWords)].map(x=>`<span class="sound-word">${esc(x)}</span>`).join('')}</div>`:'<p>Words you look up while reading appear here.</p>'}<div class="divider"></div><button class="btn btn-outline btn-sm" data-action="export-progress">Export learning data</button></div>`}
+function renderEducators(){const sample='Why did the fox run? | To find food | To dance | To sleep | To hide | 1 | The passage explains the fox was hungry.';return `<h1 class="page-title">Educator tools</h1><p class="page-subtitle">Add your own passages, share a story link, or export progress. No account or server needed.</p><div class="two-col" style="margin-top:25px;align-items:start"><section class="panel"><h3>Create a custom passage</h3><p>Original or appropriately licensed text only. Add questions to make a comprehension check.</p><form id="custom-story-form"><div class="form-field"><label for="custom-title">Story title</label><input class="field" id="custom-title" name="title" required maxlength="90" placeholder="The Lost Kite"></div><div class="form-field"><label for="custom-level">Reading level (approximate)</label><select id="custom-level" name="level"><option value="1">Level 1 · Early reader</option><option value="2" selected>Level 2 · Growing reader</option><option value="3">Level 3 · Independent reader</option></select></div><div class="form-field"><label for="custom-text">Story text</label><textarea class="field" name="text" id="custom-text" minlength="50" maxlength="12000" required placeholder="Paste an original reading passage here. Separate paragraphs with blank lines."></textarea></div><div class="form-field"><label for="custom-questions">Quiz questions (optional)</label><textarea class="field" id="custom-questions" name="questions" placeholder="${esc(sample)}" style="min-height:95px"></textarea><small>One question per line: question | choice A | B | C | D | correct number (1–4) | explanation. If blank, passage is reading-only.</small></div><button type="submit" class="btn btn-primary">Save passage</button></form></section><div class="stack"><section class="panel"><h3>Share a practice story</h3><p>Choose a built-in story and copy a link. Recipients can read without signing in.</p><div class="form-field"><label for="share-story">Select story</label><select id="share-story">${STORIES.map(s=>`<option value="${esc(s.id)}">${esc(s.title)} · Level ${s.level}</option>`).join('')}</select></div><button class="btn btn-outline btn-sm" data-action="copy-story">Copy story link</button></section><section class="panel"><h3>Back up or review progress</h3><p>Download a CSV of scores or a complete JSON backup. Imported files replace the local learning log on this device.</p><button class="btn btn-outline btn-sm" data-action="export-csv">Export scores (.csv)</button> <button class="btn btn-outline btn-sm" data-action="export-progress">Export backup (.json)</button><div class="form-field" style="margin-top:14px"><label for="backup-file">Restore your own RushRead backup</label><input class="field" type="file" id="backup-file" accept=".json,application/json"></div></section><section class="panel"><h3>Private by design</h3><p>Nicknames, responses and lessons stay on this device. The app has no login, analytics scripts, advertising, or cloud database.</p><div class="tip-box caution">A shared classroom computer shares this browser's saved progress. Use separate browser profiles or reset after each learner. Don't enter identifiable student records.</div><button class="btn btn-outline btn-sm" style="margin-top:15px" data-action="reset-data">Reset all local data</button></section></div></div>`}
+function renderMission(){return `<h1 class="page-title">About RushRead</h1><p class="page-subtitle">RushRead is a unique way to improve reading speed, comprehension, and memory. It is an independent prototype built to make reading practice accessible, especially where literacy gaps are widest.</p><div class="mission-grid"><div class="stack"><section class="panel"><h2>Why South Dakota?</h2><p>In the 2024 NAEP reading assessment, <strong>28% of South Dakota fourth-graders</strong> scored at or above NAEP Proficient, compared with 32% in 2022. That national achievement level represents strong performance on challenging work; it should not be interpreted as the percentage who can read or as a state's grade-level proficiency rate.</p><p>South Dakota's Department of Education has introduced a statewide literacy initiative informed by the science of reading. RushRead is designed to complement—not replace—qualified instruction.</p><a class="text-link" href="https://news.sd.gov/news?id=news_kb_article_view&sys_id=1106412f97975650447ef64ef053af9f" target="_blank" rel="noopener noreferrer">State's summary of NAEP results</a></section><section class="panel"><h2>What it practices</h2><ul><li><strong>Phonemic awareness:</strong> Notice and work with sounds in spoken words (more educator-led exercises are needed).</li><li><strong>Phonics:</strong> Connect letters and patterns to sounds in the Sound Lab.</li><li><strong>Fluency:</strong> Reread, listen, and focus on sentences without pressure to rush.</li><li><strong>Vocabulary:</strong> Discover useful word meanings in context.</li><li><strong>Comprehension:</strong> Answer questions, explain your thinking, and revisit the text.</li></ul><p>These areas reflect South Dakota's English Language Arts standards. This prototype currently offers the strongest independent practice in phonics, vocabulary, and comprehension.</p></section></div><div class="stack"><div class="panel"><h3>The problem</h3><div class="mission-stat">28%</div><p>South Dakota fourth-graders at or above NAEP Proficient in reading (2024). <strong>Not</strong> a grade-level reading rate.</p></div><section class="panel"><h3>Evidence and transparency</h3><div class="source-list"><a href="https://www.nationsreportcard.gov/reports/reading/2024/g4_8/state-district-trends/" target="_blank" rel="noopener noreferrer">2024 NAEP reading state trends</a><a href="https://doe.sd.gov/assessment/NAEP.aspx" target="_blank" rel="noopener noreferrer">South Dakota Department of Education NAEP hub</a><a href="https://doe.sd.gov/contentstandards/ELA.aspx" target="_blank" rel="noopener noreferrer">South Dakota ELA standards</a></div><div class="divider"></div><h3>Important limitations</h3><p>No claim of measured learning gains, school alignment certification, formal reading assessment, or accessibility certification is made. Reading levels are approximate; speech synthesis support varies by browser.</p></section></div></div>`}
+function download(name,mime,text){const blob=new Blob([text],{type:mime});const u=URL.createObjectURL(blob);const a=document.createElement('a');a.href=u;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1200)}
+function showModal(type){const root=$('#modal-root');if(type==='name'){root.innerHTML=`<div class="modal-wrap" role="presentation"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="modal-header"><h2 id="modal-title">Your reader nickname</h2><button class="close-btn" data-action="close-modal" aria-label="Close">×</button></div><p class="muted" style="font-size:12px">Optional. Use a nickname, not a full student name.</p><form id="name-form"><div class="form-field"><label for="nickname">Nickname</label><input class="field" id="nickname" name="nickname" maxlength="24" value="${esc(profile.name)}" placeholder="Reader"></div><button class="btn btn-primary" type="submit">Save nickname</button></form></section></div>`}else{root.innerHTML=`<div class="modal-wrap" role="presentation"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="modal-header"><h2 id="modal-title">Reading preferences</h2><button class="close-btn" data-action="close-modal" aria-label="Close">×</button></div><div class="settings-group"><strong>Appearance</strong><p>Choose how RushRead looks.</p><div class="filter-pills">${[['light','Light'],['dark','Dark'],['system','Device setting']].map(([v,t])=>`<button class="pill ${profile.prefs.theme===v?'active':''}" data-action="pref-theme" data-value="${v}" aria-pressed="${profile.prefs.theme===v}">${t}</button>`).join('')}</div></div><div class="settings-group"><strong>Text size</strong><p>Choose a comfortable size for story passages.</p><div class="filter-pills">${[['normal','Standard'],['large','Large'],['xlarge','Extra large']].map(([v,t])=>`<button class="pill ${profile.prefs.font===v?'active':''}" data-action="pref-font" data-value="${v}" aria-pressed="${profile.prefs.font===v}">${t}</button>`).join('')}</div></div><div class="settings-group"><label><input type="checkbox" id="pref-spacing" ${profile.prefs.spacing?'checked':''}> Extra line spacing</label></div><div class="settings-group"><label><input type="checkbox" id="pref-contrast" ${profile.prefs.contrast?'checked':''}> High-contrast story text</label></div><div class="settings-group"><label><input type="checkbox" id="pref-motion" ${profile.prefs.motion!==false?'checked':''}> Enable animations</label></div><div class="tip-box" style="margin-top:17px">Settings are saved locally and can be changed anytime.</div><button class="btn btn-primary" data-action="close-modal" style="margin-top:17px">Done</button></section></div>`}root.querySelector('button').focus()}
+function closeModal(){$('#modal-root').innerHTML=''}
+function redrawReader(){const s=ui.reader&&storyById(ui.reader.id);if(s&&ui.route.startsWith('read/'))$('#content').innerHTML=renderReader(s)}
+function tickSpeed(){const r=ui.reader,s=storyById(r?.id);if(!r||!s)return;const words=units(s,r.chunk);r.speedIndex=Math.min(words.length,r.speedIndex+1);const el=$('#speed-word');if(el)el.textContent=words[r.speedIndex]||'Done!';if(r.speedIndex>=words.length){clearSpeed();const b=$('#speed-toggle');if(b)b.textContent='Restart'}}
+function startSpeed(){const r=ui.reader;if(!r)return;if(r.speedIndex>=units(storyById(r.id),r.chunk).length)r.speedIndex=0;if(ui.speedTimer){clearSpeed();$('#speed-toggle').textContent='Resume';return}$('#speed-word').textContent=units(storyById(r.id),r.chunk)[r.speedIndex];ui.speedTimer=setInterval(tickSpeed,60000/r.wpm*r.chunk);$('#speed-toggle').textContent='Pause'}
+function answerQuiz(index){const q=ui.quiz,s=storyById(q.id);if(!s||q.answers[q.index]!==undefined)return;q.answers[q.index]=index;$('#content').innerHTML=renderQuiz(s)}
+function nextQuiz(){const q=ui.quiz,s=storyById(q.id);if(q.answers[q.index]===undefined)return;if(q.index<s.questions.length-1){q.index++;$('#content').innerHTML=renderQuiz(s)}else{q.complete=true;const right=q.answers.filter((a,i)=>a===s.questions[i].answer).length;profile.quizzes.push({id:q.id,at:Date.now(),correct:right,total:s.questions.length});save();$('#content').innerHTML=renderQuiz(s)}}
+function answerSound(index){const x=ui.sound,l=lessonById(x.id);if(x.selected!==null)return;x.selected=index;profile.phonics.push({id:l.id,at:Date.now(),correct:index===l.answer});save();$('#content').innerHTML=renderSound(l)}
+function handleClick(e){const a=e.target.closest('[data-action]');if(!a)return;const action=a.dataset.action;const val=a.dataset.value;e.preventDefault();
+ if(action==='open-settings')showModal('settings');
+ else if(action==='edit-name')showModal('name');
+ else if(action==='close-modal')closeModal();
+ else if(action==='filter-level'){ui.level=val;$('#content').innerHTML=renderLibrary()}
+ else if(action==='vocab'){const w=a.dataset.word.toLowerCase(),s=storyById(ui.reader.id);const definition=Object.entries(s.vocab||{}).find(([k])=>k.toLowerCase()===w)?.[1];if(definition){$('#glossary').innerHTML=`<strong>${esc(w)}</strong> · ${esc(definition)} <button class="btn btn-outline btn-sm" data-action="speak-word" data-word="${esc(w)}" style="margin-left:8px">Hear word</button>`;if(!profile.savedWords.includes(w)){profile.savedWords.push(w);save()}}}
+ else if(action==='speak-word')speak(a.dataset.word);
+ else if(action==='read-aloud'){if('speechSynthesis' in window && speechSynthesis.speaking){stopSpeech();toast('Read aloud stopped.')}else{speak(textOnly(storyById(ui.reader.id)));toast('Reading aloud. Tap Listen again to stop.')}}
+ else if(action==='read-mode'){clearSpeed();ui.reader.mode=val;redrawReader()}
+ else if(action==='font'){const list=['normal','large','xlarge'];let i=list.indexOf(ui.reader.font);i=Math.max(0,Math.min(2,i+(val==='plus'?1:-1)));ui.reader.font=list[i];profile.prefs.font=list[i];save();redrawReader()}
+ else if(action==='focus-next'){ui.reader.focus=Math.min(sentences(storyById(ui.reader.id)).length-1,ui.reader.focus+1);redrawReader()}
+ else if(action==='focus-prev'){ui.reader.focus=Math.max(0,ui.reader.focus-1);redrawReader()}
+ else if(action==='chunk'){clearSpeed();ui.reader.chunk=Number(val);ui.reader.speedIndex=0;redrawReader()}
+ else if(action==='speed-toggle')startSpeed();
+ else if(action==='turn-page'){ui.scene=(ui.scene+1)%SCENES.length;$('.book-scene').innerHTML=SCENES[ui.scene]}
+ else if(action==='order-pick'){ui.order.picked.push(Number(a.dataset.i));$('#content').innerHTML=renderOrder()}
+ else if(action==='order-undo'){ui.order.picked.pop();$('#content').innerHTML=renderOrder()}
+ else if(action==='order-check'){const o=ui.order;o.checked=true;profile.recall.push({at:Date.now(),correct:o.picked.filter((p,k)=>p===k).length,total:o.sents.length});save();$('#content').innerHTML=renderOrder()}
+ else if(action==='order-new'){ui.order=makeOrder();$('#content').innerHTML=renderOrder()}
+ else if(action==='speed-next'){clearSpeed();tickSpeed();if($('#speed-toggle'))$('#speed-toggle').textContent='Resume'}
+ else if(action==='speed-back'){clearSpeed();ui.reader.speedIndex=Math.max(0,ui.reader.speedIndex-1);redrawReader()}
+ else if(action==='finish-read'){clearSpeed();recordRead();const s=storyById(a.dataset.id);if(s?.questions?.length){ui.quiz=null;nav('quiz/'+s.id)}else{toast('Story saved.');nav('library')}}
+ else if(action==='answer-recall')answerRecall(a.dataset.word);
+ else if(action==='next-recall')nextRecall();
+ else if(action==='new-recall'){ui.recall=makeRecall();$('#content').innerHTML=renderRecall()}
+ else if(action==='answer-quiz')answerQuiz(Number(a.dataset.index));
+ else if(action==='next-quiz')nextQuiz();
+ else if(action==='answer-sound')answerSound(Number(a.dataset.index));
+ else if(action==='retry-sound'){ui.sound.selected=null;$('#content').innerHTML=renderSound(lessonById(ui.sound.id))}
+ else if(action==='pref-theme'){profile.prefs.theme=val;save();applyTheme();showModal('settings')}
+ else if(action==='pref-font'){profile.prefs.font=val;save();showModal('settings');if(ui.reader)ui.reader.font=val}
+ else if(action==='refresh-ai'){const panel=$('#ai-coach');if(panel){panel.classList.add('analyzing');setTimeout(()=>{panel.outerHTML=renderAiCoach(true);toast('Fresh AI scan complete.');},900+Math.random()*700)} }
+ else if(action==='export-progress'){download('rushread-backup.json','application/json',JSON.stringify({app:'RushRead',version:1,exportedAt:new Date().toISOString(),profile},null,2));toast('Backup downloaded.')}
+ else if(action==='export-csv'){const rows=[['date','activity','passage_or_lesson','correct','total','seconds']];for(const q of profile.quizzes)rows.push([new Date(q.at).toISOString(),'quiz',storyById(q.id)?.title||q.id,q.correct,q.total,'']);for(const r of profile.reads)rows.push([new Date(r.at).toISOString(),'read',storyById(r.id)?.title||r.id,'','',r.seconds]);for(const p of profile.phonics)rows.push([new Date(p.at).toISOString(),'sound',lessonById(p.id)?.title||p.id,p.correct?1:0,1,'']);download('rushread-progress.csv','text/csv',rows.map(row=>row.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\r\n'));toast('CSV report downloaded.')}
+ else if(action==='copy-story'){const v=$('#share-story')?.value||STORIES[0].id;const link=location.href.split('#')[0]+'#read/'+encodeURIComponent(v);if(navigator.clipboard?.writeText)navigator.clipboard.writeText(link).then(()=>toast('Story link copied.'),()=>window.prompt('Copy this link:',link));else window.prompt('Copy this link:',link)}
+ else if(action==='reset-data'){if(window.confirm('Erase all local RushRead activity, settings, and custom stories on this browser? This cannot be undone.')){profile=clone(initial);save();applyTheme();ui.reader=null;toast('Local RushRead data reset.');route()}}
+}
+function createCustom(fd){const title=String(fd.get('title')||'').trim(),text=String(fd.get('text')||'').trim(),level=Number(fd.get('level'));if(title.length<2||text.length<50||text.length>12000||![1,2,3].includes(level)){toast('Please add a title and 50–12,000 characters of story text.');return}const lines=String(fd.get('questions')||'').split('\n').map(x=>x.trim()).filter(Boolean);const questions=[];for(const line of lines){const pieces=line.split('|').map(s=>s.trim());if(pieces.length!==7||!['1','2','3','4'].includes(pieces[5])||pieces.slice(0,5).some(s=>!s)){toast('Question format: question | four choices | answer number (1–4) | explanation.');return}questions.push({q:pieces[0],choices:pieces.slice(1,5),answer:Number(pieces[5])-1,skill:'Comprehension',why:pieces[6]||'Review the passage for evidence.'})}if(questions.length>12){toast('Please add no more than 12 questions.');return}const id='custom-'+Date.now().toString(36),paras=text.split(/\n\s*\n/).map(x=>x.replace(/\s*\n\s*/g,' ').trim()).filter(Boolean);const s={id,title,level,category:'Custom',place:'Teacher-created',time:Math.max(1,Math.round(countWords(paras)/100)),symbol:'book',tint:'lavender',teaser:'A locally saved reading passage.',paragraphs:paras,vocab:{},questions};profile.customStories.push(s);save();ui.search='';ui.level='all';toast('Custom passage saved on this device.');nav('read/'+id)}
+function handleSubmit(e){if(e.target.id==='name-form'||e.target.id==='welcome-name-form'){e.preventDefault();profile.name=String(new FormData(e.target).get('nickname')||'').trim().slice(0,24);save();closeModal();route();toast('Nickname saved.')}else if(e.target.id==='custom-story-form'){e.preventDefault();createCustom(new FormData(e.target))}}
+function handleChange(e){if(e.target.id==='pref-motion'){profile.prefs.motion=e.target.checked;save();applyTheme()}else if(e.target.id==='pref-spacing'||e.target.id==='pref-contrast'){profile.prefs[e.target.id==='pref-spacing'?'spacing':'contrast']=e.target.checked;save();if(ui.route.startsWith('read/'))redrawReader();}
+ if(e.target.id==='backup-file'){const file=e.target.files?.[0];if(!file)return;if(file.size>1024*1024){toast('Backup must be smaller than 1 MB.');return}file.text().then(raw=>{try{const obj=JSON.parse(raw);if(obj.app!=='RushRead'||!obj.profile||!Array.isArray(obj.profile.reads)||!Array.isArray(obj.profile.quizzes)||!Array.isArray(obj.profile.phonics)||!Array.isArray(obj.profile.customStories))throw Error('Invalid file');if(!window.confirm('Replace local RushRead data with this backup?'))return;profile={...clone(initial),...obj.profile,prefs:{...initial.prefs,...obj.profile.prefs},customStories:obj.profile.customStories.slice(0,50).filter(s=>s&&typeof s.id==='string'&&Array.isArray(s.paragraphs)&&Array.isArray(s.questions)&&s.paragraphs.join(' ').length<=12000)};save();ui.reader=null;toast('Backup restored.');route()}catch(err){toast('That is not a valid RushRead backup.')}}).catch(()=>toast('Could not read that file.'))}
+}
+function handleInput(e){if(e.target.id==='story-search'){ui.search=e.target.value;$('#story-results').innerHTML=storyResults(filteredStories())}else if(e.target.id==='speed-range'){ui.reader.wpm=Number(e.target.value);$('#wpm-label').textContent=ui.reader.wpm;if(ui.speedTimer){clearSpeed();startSpeed()}}}
+window.addEventListener('hashchange',route);
+document.addEventListener('click',handleClick);
+document.addEventListener('submit',handleSubmit);
+document.addEventListener('change',handleChange);
+document.addEventListener('input',handleInput);
+document.addEventListener('keydown',e=>{if(ui.route.startsWith('read/')&&ui.reader?.mode==='speed'&&!['INPUT','TEXTAREA','BUTTON','SELECT'].includes(document.activeElement.tagName)){if(e.key===' '){e.preventDefault();startSpeed()}else if(e.key==='ArrowRight'){e.preventDefault();clearSpeed();tickSpeed()}else if(e.key==='ArrowLeft'){e.preventDefault();clearSpeed();ui.reader.speedIndex=Math.max(0,ui.reader.speedIndex-1);redrawReader()}}
+if(e.key==='Escape'&&$('#modal-root').children.length)closeModal();if(ui.route.startsWith('read/')&&ui.reader?.mode==='spotlight'&&!['INPUT','TEXTAREA','BUTTON'].includes(document.activeElement.tagName)){if(e.key==='ArrowRight'){e.preventDefault();ui.reader.focus=Math.min(sentences(storyById(ui.reader.id)).length-1,ui.reader.focus+1);redrawReader()}else if(e.key==='ArrowLeft'){e.preventDefault();ui.reader.focus=Math.max(0,ui.reader.focus-1);redrawReader()}}});
+document.addEventListener('click',e=>{if(e.target.classList.contains('modal-wrap'))closeModal()});
+
+route();
+})();
+</script>
+</body>
+</html>
